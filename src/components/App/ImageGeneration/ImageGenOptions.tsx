@@ -4,7 +4,7 @@ import { InteractiveRangeSlider } from "@/components/ui/slider";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { estimateCost } from "@/lib/costEstimation";
 import { cn } from "@/lib/utils";
-import { GenerationOptions } from "@/types";
+import { GenerationOptions, StyleValue } from "@/types";
 import * as TogglePrimitive from "@radix-ui/react-toggle";
 import { ChevronDownIcon, ChevronUpIcon, GemIcon } from "lucide-react";
 import { useEffect } from "react";
@@ -57,25 +57,25 @@ export const ImageGenOptions = ({
 
   const onStyleChange = (value: string) => {
     if (value === "natural" || value === "vivid") {
-      setGenerationOptions((prevOptions: GenerationOptions) => ({
-        ...prevOptions,
-        style: value,
-      }));
+      setGenerationOptions({
+        ...generationOptions,
+        style: value as StyleValue,
+      });
     }
   };
 
   const onHdQualityToggle = () => {
-    setGenerationOptions((prevOptions: GenerationOptions) => ({
-      ...prevOptions,
-      hdQuality: !prevOptions.hdQuality,
-    }));
+    setGenerationOptions({
+      ...generationOptions,
+      hdQuality: !generationOptions.hdQuality,
+    });
   };
 
   const onNumImagesChange = (value: number) => {
-    setGenerationOptions((prevOptions: GenerationOptions) => ({
-      ...prevOptions,
+    setGenerationOptions({
+      ...generationOptions,
       numImages: value,
-    }));
+    });
   };
 
   return (
@@ -84,10 +84,10 @@ export const ImageGenOptions = ({
         <AspectRatioToggle
           aspectRatio={generationOptions.aspectRatio}
           setAspectRatio={(newAspectRatio) =>
-            setGenerationOptions((prevOptions: GenerationOptions) => ({
-              ...prevOptions,
+            setGenerationOptions({
+              ...generationOptions,
               aspectRatio: newAspectRatio,
-            }))
+            })
           }
         />
       </div>
