@@ -1,31 +1,34 @@
-import { useState } from "preact/hooks";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-  CardTitle,
-  CardDescription,
+  CardTitle
 } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import ImageCard from "./ImageCard";
+import { Label } from "@/components/ui/label";
+import { InteractiveRangeSlider } from "@/components/ui/slider";
+import { Textarea } from "@/components/ui/textarea";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import type { AspectRatioValue } from "@/types";
 import { motion } from "framer-motion";
+import { ChevronDown, ChevronUp, Sparkles } from "lucide-react";
+import { useState } from "preact/hooks";
+import { AspectRatioToggle } from "./AspectRatioToggle";
+import ImageCard from "./ImageCard";
 
 const ImageGeneration = () => {
   const [prompt, setPrompt] = useState("");
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showSettings, setShowSettings] = useState(false);
+  const toggleShowSettings = () => setShowSettings(!showSettings);
+
+  const [aspectRatio, setAspectRatio] = useState<AspectRatioValue>("square");
+  const [style, setStyle] = useState("vivid");
+  const [numImages, setNumImages] = useState(1);
 
   const handleGenerate = () => {
     setIsGenerating(true);
@@ -42,78 +45,96 @@ const ImageGeneration = () => {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Image Generation</CardTitle>
-        <CardDescription>
-          Enter a prompt to generate images using DALL-E
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <Textarea
-          placeholder="Enter your prompt here..."
-          value={prompt}
-          onChange={(e) => setPrompt("TODO")} /* TODO: Access e.target.value */
-          className="min-h-[100px]"
-        />
-        <div className="flex space-x-4">
-          <Select defaultValue="1">
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Number of images" />
-            </SelectTrigger>
-            <SelectContent>
-              {[1, 2, 3, 4, 5, 6].map((num) => (
-                <SelectItem key={num} value={num.toString()}>
-                  {num} image{num > 1 ? "s" : ""}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Select defaultValue="1024x1024">
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Image size" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="256x256">256x256</SelectItem>
-              <SelectItem value="512x512">512x512</SelectItem>
-              <SelectItem value="1024x1024">1024x1024</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Switch id="natural-style" />
-          <label htmlFor="natural-style">Use natural style</label>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Switch id="hd-quality" />
-          <label htmlFor="hd-quality">HD quality</label>
-        </div>
-      </CardContent>
-      <CardFooter>
-        <Button onClick={handleGenerate} disabled={isGenerating}>
-          {isGenerating ? "Generating..." : "Generate Images"}
-        </Button>
-      </CardFooter>
+    <>
+      <Card className="">
+        <CardHeader>
+          <div className="flex flex-row items-center justify-between">
+            <CardTitle>Image Generation</CardTitle>
+            <div className="flex flex-row items-center">
+              <h4 className="text-sm font-semibold">Generation Options</h4>
+              <Button variant="ghost" size="sm" className="w-9 p-0" onClick={toggleShowSettings}>
+                {showSettings ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                <span className="sr-only">Toggle settings for image generation</span>
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="flex space-x-4">
+          <div className="flex-1">
+            <Textarea
+              placeholder="Enter your prompt here..."
+              value={prompt}
+              onChange={(/* e */) => setPrompt("")} /* TODO: Access e.target.value) */
+              className="min-h-[200px]"
+            />
+          </div>
+          <div className={`space-y-2`}>
+            {showSettings && (
+              <>
+                <div className="space-y-2 ">
+                  <Label htmlFor="aspect-ratio">Aspect Ratio</Label>
+                  <AspectRatioToggle
+                    aspectRatio={aspectRatio}
+                    setAspectRatio={setAspectRatio}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="style">Style</Label>
+                  <ToggleGroup type="single" value={style} onValueChange={setStyle} className="justify-start">
+                    <ToggleGroupItem value="natural" aria-label="Natural">
+                      Natural
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value="vivid" aria-label="Vivid">
+                      Vivid
+                    </ToggleGroupItem>
+                  </ToggleGroup>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="num-images">Number of Images: {numImages}</Label>
+                  <InteractiveRangeSlider
+                    min={1}
+                    max={6}
+                    step={1}
+                    value={numImages}
+                    setValue={setNumImages}
+                  />
+                </div>
+                <div className="rounded-lg border p-2 text-sm">
+                  <div className="font-semibold">Estimated Cost</div>
+                  <div className="text-muted-foreground">$0.00</div>
+                </div>
+              </>
+            )}
+          </div>
+        </CardContent>
+        <CardFooter>
+          <Button onClick={handleGenerate} disabled={isGenerating} className="w-full">
+            {isGenerating ? "Generating..." : "Generate Images"}
+            <Sparkles className="ml-2 h-4 w-4" />
+          </Button>
+        </CardFooter>
+      </Card>
       {error && (
         <Alert variant="destructive">
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
       <motion.div
-        className="grid gap-4"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        {generatedImages.length > 0 && (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {generatedImages.map((img, index) => (
-              <ImageCard key={index} img={img} index={index} />
-            ))}
-          </div>
-        )}
+        <div className="grid gap-4">
+          {generatedImages.length > 0 && (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {generatedImages.map((img, index) => (
+                <ImageCard key={index} img={img} index={index} />
+              ))}
+            </div>
+          )}
+        </div>
       </motion.div>
-    </Card>
+    </>
   );
 };
 
