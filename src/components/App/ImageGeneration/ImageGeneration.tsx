@@ -6,6 +6,7 @@ import { Switch } from '@/components/ui/switch';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import ImageCard from './ImageCard';
+import {motion} from "framer-motion";
 
 const ImageGeneration = () => {
     const [prompt, setPrompt] = useState('');
@@ -75,13 +76,20 @@ const ImageGeneration = () => {
                     <AlertDescription>{error}</AlertDescription>
                 </Alert>
             )}
-            {generatedImages.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {generatedImages.map((img, index) => (
-                        <ImageCard key={index} img={img} index={index} />
-                    ))}
-                </div>
-            )}
+            <motion.div
+                className="grid gap-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+            >
+                {generatedImages.length > 0 && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {generatedImages.map((img, index) => (
+                            <ImageCard key={index} img={img} index={index} />
+                        ))}
+                    </div>
+                )}
+            </motion.div>
         </Card>
     );
 };
