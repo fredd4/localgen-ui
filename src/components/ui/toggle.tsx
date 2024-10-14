@@ -32,7 +32,8 @@ const Toggle = forwardRef<
   VariantProps<typeof toggleVariants>
 >(({ className, variant, size, ...props }, ref) => (
   <TogglePrimitive.Root
-    ref={ref as any} // Cast to any for compatibility
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ref={ref as any}
     className={cn(toggleVariants({ variant, size, className }))}
     {...props}
   />
