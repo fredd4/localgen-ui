@@ -7,7 +7,7 @@ const Header = () => (
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <span className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
+      <span className="text-5xl font-bold bg-clip-text">
         DALL-E Web App
       </span>
     </motion.h1>
