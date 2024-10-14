@@ -1,3 +1,4 @@
+import { defaultGenerationOptions } from "@/config/imageGeneration";
 import { GenerationOptions } from "@/types";
 import { useState } from "preact/hooks";
 
@@ -6,12 +7,7 @@ export const useGenerationOptions = () => {
   const [showSettings, setShowSettings] = useState(false);
   const toggleShowSettings = () => setShowSettings((prev) => !prev);
 
-  const [generationOptions, setGenerationOptions] = useState<GenerationOptions>({
-    aspectRatio: "square",
-    style: "vivid",
-    hdQuality: false,
-    numImages: 1,
-  });
+  const [generationOptions, setGenerationOptions] = useState<GenerationOptions>(defaultGenerationOptions);
 
   return {
     price,

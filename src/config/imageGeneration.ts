@@ -1,8 +1,16 @@
+import { GenerationOptions } from "@/types";
 import {
   RectangleHorizontalIcon,
   RectangleVerticalIcon,
   SquareIcon,
 } from "lucide-react";
+
+export const defaultGenerationOptions = {
+  aspectRatio: "square",
+  style: "vivid",
+  hdQuality: false,
+  numImages: 1,
+} as GenerationOptions;
 
 export const aspectRatios = [
   {
@@ -24,3 +32,14 @@ export const aspectRatios = [
     Icon: RectangleVerticalIcon,
   },
 ] as const;
+
+export const generationCost = {
+  hd: {
+    square: 0.08,
+    nonSquare: 0.12,
+  },
+  nonHd: {
+    square: 0.04,
+    nonSquare: 0.08,
+  },
+} as const;

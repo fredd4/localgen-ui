@@ -1,17 +1,18 @@
 import type { GenerationOptions } from "@/types";
+import { generationCost } from "@/config/imageGeneration";
 
 const costPerImage = (settings: GenerationOptions) => {
   if (settings.hdQuality) {
     if (settings.aspectRatio === "square") {
-      return 0.08;
+      return generationCost.hd.square;
     } else {
-      return 0.12;
+      return generationCost.hd.nonSquare;
     }
   } else {
     if (settings.aspectRatio === "square") {
-      return 0.04;
+      return generationCost.nonHd.square;
     } else {
-      return 0.08;
+      return generationCost.nonHd.nonSquare;
     }
   }
 };

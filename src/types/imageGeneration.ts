@@ -5,7 +5,7 @@ export type StyleValue = "natural" | "vivid";
 
 export interface GenerationOptions {
   aspectRatio: AspectRatioValue;
-  style: "natural" | "vivid";
+  style: StyleValue;
   hdQuality: boolean;
   numImages: number;
 }
