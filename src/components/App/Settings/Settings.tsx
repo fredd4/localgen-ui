@@ -1,19 +1,29 @@
-import { useState } from 'preact/hooks';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { useState } from "preact/hooks";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 const Settings = () => {
-  const [apiKey, setApiKey] = useState('');
+  const [apiKey, setApiKey] = useState("");
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>Settings</CardTitle>
-        <CardDescription>Manage your API key and other settings</CardDescription>
+        <CardDescription>
+          Manage your API key and other settings
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <label htmlFor="api-key" className="text-sm font-medium">API Key</label>
+          <label htmlFor="api-key" className="text-sm font-medium">
+            API Key
+          </label>
           <Input
             id="api-key"
             type="password"

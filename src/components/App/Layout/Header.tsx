@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 const Header = () => (
   <header className="mb-8">
@@ -7,9 +7,7 @@ const Header = () => (
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <span className="text-5xl font-bold bg-clip-text">
-        DALL-E Web App
-      </span>
+      <span className="bg-clip-text text-5xl font-bold">DALL-E Web App</span>
     </motion.h1>
   </header>
 );

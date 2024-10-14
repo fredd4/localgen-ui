@@ -1,18 +1,18 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import Header from '@/components/App/Layout/Header';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Header from "@/components/App/Layout/Header";
 import ImageGeneration from "@/components/App/ImageGeneration/ImageGeneration";
 import History from "@/components/App/History/History";
 import Settings from "@/components/App/Settings/Settings";
-import { ClockIcon, ImageIcon, SettingsIcon } from 'lucide-react';
+import { ClockIcon, ImageIcon, SettingsIcon } from "lucide-react";
 
 const iconStyle = "w-4 h-4 mr-2";
 
 const App = () => (
   <div className="min-h-screen bg-gray-100 p-8">
-    <div className="max-w-6xl mx-auto">
+    <div className="mx-auto max-w-6xl">
       <Header />
       <Tabs defaultValue="generate" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3 bg-primary text-primary-foreground rounded-lg p-1">
+        <TabsList className="grid w-full grid-cols-3 rounded-lg bg-primary p-1 text-primary-foreground">
           <TabsTrigger value="generate">
             <ImageIcon className={iconStyle} />
             Generate

@@ -1,6 +1,6 @@
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { MaximizeIcon, RotateCwIcon } from 'lucide-react';
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { MaximizeIcon, RotateCwIcon } from "lucide-react";
 
 interface ImageCardProps {
   img: string;
@@ -8,17 +8,29 @@ interface ImageCardProps {
 }
 
 const ImageCard = ({ img, index }: ImageCardProps) => (
-  <Card key={index} className="bg-gray-800 border-gray-700 overflow-hidden">
+  <Card key={index} className="overflow-hidden border-gray-700 bg-gray-800">
     <CardContent className="p-2">
-      <img src={img} alt={`Generated image ${index + 1}`} className="w-full h-auto rounded-md" />
+      <img
+        src={img}
+        alt={`Generated image ${index + 1}`}
+        className="h-auto w-full rounded-md"
+      />
     </CardContent>
     <CardFooter className="flex justify-between bg-gray-700">
-      <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white">
-        <RotateCwIcon className="w-4 h-4 mr-2" />
+      <Button
+        variant="ghost"
+        size="sm"
+        className="text-gray-300 hover:text-white"
+      >
+        <RotateCwIcon className="mr-2 h-4 w-4" />
         Rotate
       </Button>
-      <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white">
-        <MaximizeIcon className="w-4 h-4 mr-2" />
+      <Button
+        variant="ghost"
+        size="sm"
+        className="text-gray-300 hover:text-white"
+      >
+        <MaximizeIcon className="mr-2 h-4 w-4" />
         View Full Size
       </Button>
     </CardFooter>
