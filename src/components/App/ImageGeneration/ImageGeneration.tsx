@@ -8,26 +8,34 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { StyleValue, type AspectRatioValue } from "@/types";
+import { useGenerationOptions } from "@/hooks/useGenerationOptions";
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import ImageCard from "./ImageCard";
-import { ImageGenOptions, ImageGenOptionsToggle } from "./ImageGenOptions";
+import {
+  ImageGenOptions,
+  ImageGenOptionsToggle,
+} from "@/components/App/ImageGeneration/ImageGenOptions";
 
 const ImageGeneration = () => {
   const [prompt, setPrompt] = useState("");
-  const [price, setPrice] = useState(0);
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showSettings, setShowSettings] = useState(false);
-  const toggleShowSettings = () => setShowSettings(!showSettings);
 
-  const [aspectRatio, setAspectRatio] = useState<AspectRatioValue>("square");
-  const [style, setStyle] = useState<StyleValue>("vivid");
-  const [hdQuality, setHdQuality] = useState(false);
-  const [numImages, setNumImages] = useState(1);
+  const {
+    price,
+    setPrice,
+    showSettings,
+    toggleShowSettings,
+    generationOptions,
+    setGenerationOptions,
+  } = useGenerationOptions();
+
+  useEffect(() => {
+    console.log("generationOptions", generationOptions);
+  }, [generationOptions]);
 
   const handleGenerate = () => {
     setIsGenerating(true);
@@ -61,27 +69,19 @@ const ImageGeneration = () => {
               id="prompt"
               placeholder="Enter your prompt here..."
               value={prompt}
-              onChange={
-                (/* e */) => setPrompt("")
-              } /* TODO: Access e.target.value) */
+              onChange={(e) => setPrompt((e.target as HTMLInputElement).value)}
               className="min-h-[200px]"
             />
           </div>
-          <div className={`relative space-y-2`}>
-            {showSettings && (
+          {showSettings && (
+            <div className="relative space-y-2">
               <ImageGenOptions
-                aspectRatio={aspectRatio}
-                setAspectRatio={setAspectRatio}
-                style={style}
-                setStyle={setStyle}
-                hdQuality={hdQuality}
-                setHdQuality={setHdQuality}
-                numImages={numImages}
-                setNumImages={setNumImages}
+                generationOptions={generationOptions}
+                setGenerationOptions={setGenerationOptions}
                 setPrice={setPrice}
               />
-            )}
-          </div>
+            </div>
+          )}
         </CardContent>
         <CardFooter>
           <Button
