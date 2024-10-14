@@ -17,7 +17,11 @@ const ImageGeneration = () => {
     const handleGenerate = () => {
         setIsGenerating(true);
         setTimeout(() => {
-            setGeneratedImages(['/api/placeholder/512/512', '/api/placeholder/512/512']);
+            setGeneratedImages([
+                '/placeholder.svg?height=512&width=512', '/placeholder.svg?height=512&width=512',
+                '/placeholder.svg?height=512&width=512', '/placeholder.svg?height=512&width=512',
+            ]);
+            // setError("Something went wrong!")
             setIsGenerating(false);
         }, 2000);
     };
