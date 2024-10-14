@@ -1,5 +1,8 @@
+import {
+  ImageGenOptions,
+  ImageGenOptionsToggle,
+} from "@/components/App/ImageGeneration/ImageGenOptions";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,13 +13,9 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useGenerationOptions } from "@/hooks/useGenerationOptions";
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
 import { useEffect, useState } from "preact/hooks";
+import ActionRow from "./ActionRow";
 import ImageCard from "./ImageCard";
-import {
-  ImageGenOptions,
-  ImageGenOptionsToggle,
-} from "@/components/App/ImageGeneration/ImageGenOptions";
 
 const ImageGeneration = () => {
   const [prompt, setPrompt] = useState("");
@@ -84,14 +83,15 @@ const ImageGeneration = () => {
           )}
         </CardContent>
         <CardFooter>
-          <Button
+          <ActionRow />
+          {/* <Button
             onClick={handleGenerate}
             disabled={isGenerating}
             className="w-full"
           >
             {isGenerating ? "Generating..." : "Generate Images"}
             <Sparkles className="ml-2 h-4 w-4" />
-          </Button>
+          </Button> */}
         </CardFooter>
         <div className="absolute bottom-0.5 right-6 flex flex-row items-center gap-2 text-xs">
           <div className="text-foreground">Estimated Cost:</div>
