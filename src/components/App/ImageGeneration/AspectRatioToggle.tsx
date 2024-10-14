@@ -15,8 +15,8 @@ const AspectRatioToggleItem = ({ aspectRatioSetting }: Readonly<{ aspectRatioSet
       className="flex flex-col items-center justify-center space-y-1 h-fit py-3"
     >
       <span><aspectRatioSetting.Icon /></span>
-      <span className="text-sm font-medium">{aspectRatioSetting.label}</span>
-      <span className="text-sm font-medium">{aspectRatioSetting.description}</span>
+      <span className="text-sm">{aspectRatioSetting.label}</span>
+      <span className="text-xs text-gray-500">{aspectRatioSetting.description}</span>
     </ToggleGroupItem>
   );
 }
