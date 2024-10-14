@@ -1,4 +1,3 @@
-import { useState } from "preact/hooks";
 import {
   Card,
   CardContent,
@@ -6,11 +5,9 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { ApiKeyInput } from "./ApiKeyInput";
 
 const Settings = () => {
-  const [apiKey, setApiKey] = useState("");
-
   return (
     <Card>
       <CardHeader>
@@ -24,13 +21,7 @@ const Settings = () => {
           <label htmlFor="api-key" className="text-sm font-medium">
             API Key
           </label>
-          <Input
-            id="api-key"
-            type="password"
-            value={apiKey}
-            onChange={(e) => setApiKey(e.target.value)}
-            placeholder="Enter your OpenAI API key"
-          />
+          <ApiKeyInput />
         </div>
         <div className="space-y-2">
           <label className="text-sm font-medium">Usage</label>
