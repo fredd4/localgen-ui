@@ -8,7 +8,7 @@ const SETTINGS_DB_NAME = "SettingsStore";
 const SETTINGS_STORE_NAME = "settings";
 const SETTINGS_DB_VERSION = 1;
 
-const settings = ["api_key"];
+export const settings = ["api_key"];
 type SettingKey = (typeof settings)[number];
 
 interface Setting extends StoreItem {
