@@ -5,7 +5,7 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { StyleValue, type AspectRatioValue } from "@/types";
@@ -38,7 +38,7 @@ const ImageGeneration = () => {
         "/placeholder.svg?height=512&width=512",
         "/placeholder.svg?height=512&width=512",
       ]);
-      setError("Something went wrong!")
+      setError("Something went wrong!");
       setIsGenerating(false);
     }, 2000);
   };
@@ -61,11 +61,13 @@ const ImageGeneration = () => {
               id="prompt"
               placeholder="Enter your prompt here..."
               value={prompt}
-              onChange={(/* e */) => setPrompt("")} /* TODO: Access e.target.value) */
+              onChange={
+                (/* e */) => setPrompt("")
+              } /* TODO: Access e.target.value) */
               className="min-h-[200px]"
             />
           </div>
-          <div className={`space-y-2 relative`}>
+          <div className={`relative space-y-2`}>
             {showSettings && (
               <ImageGenOptions
                 aspectRatio={aspectRatio}
@@ -82,7 +84,11 @@ const ImageGeneration = () => {
           </div>
         </CardContent>
         <CardFooter>
-          <Button onClick={handleGenerate} disabled={isGenerating} className="w-full">
+          <Button
+            onClick={handleGenerate}
+            disabled={isGenerating}
+            className="w-full"
+          >
             {isGenerating ? "Generating..." : "Generate Images"}
             <Sparkles className="ml-2 h-4 w-4" />
           </Button>

@@ -14,7 +14,7 @@ const costPerImage = (settings: GenerationOptions) => {
       return 0.08;
     }
   }
-}
+};
 
-export const estimateCost = (settings: GenerationOptions) => 
+export const estimateCost = (settings: GenerationOptions) =>
   costPerImage(settings) * settings.numImages;

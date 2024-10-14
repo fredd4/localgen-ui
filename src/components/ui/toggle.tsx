@@ -28,8 +28,7 @@ const toggleVariants = cva(
 
 const Toggle = forwardRef<
   HTMLButtonElement,
-  JSX.IntrinsicElements['button'] &
-  VariantProps<typeof toggleVariants>
+  JSX.IntrinsicElements["button"] & VariantProps<typeof toggleVariants>
 >(({ className, variant, size, ...props }, ref) => (
   <TogglePrimitive.Root
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

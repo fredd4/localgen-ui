@@ -27,22 +27,42 @@ interface ImageGenOptionsProps {
   setPrice: (price: number) => void;
 }
 
-export const ImageGenOptionsToggle = ({ showSettings, toggleShowSettings }: Readonly<ImageGenOptionsToggleProps>) => {
+export const ImageGenOptionsToggle = ({
+  showSettings,
+  toggleShowSettings,
+}: Readonly<ImageGenOptionsToggleProps>) => {
   return (
     <div className="flex flex-row items-center">
-      <Button variant="ghost" size="sm" className="flex items-center" onClick={toggleShowSettings}>
-        <p className="text-sm font-semibold mr-1 pb-0.5">Generation Options</p>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="flex items-center"
+        onClick={toggleShowSettings}
+      >
+        <p className="mr-1 pb-0.5 text-sm font-semibold">Generation Options</p>
 
-        {showSettings ? <ChevronUpIcon className="h-4 w-4" /> : <ChevronDownIcon className="h-4 w-4" />}
+        {showSettings ? (
+          <ChevronUpIcon className="h-4 w-4" />
+        ) : (
+          <ChevronDownIcon className="h-4 w-4" />
+        )}
         <span className="sr-only">Toggle settings for image generation</span>
       </Button>
     </div>
   );
-}
+};
 
-export const ImageGenOptions = (
-  { aspectRatio, setAspectRatio, style, setStyle, hdQuality, setHdQuality, numImages, setNumImages, setPrice }: Readonly<ImageGenOptionsProps>
-) => {
+export const ImageGenOptions = ({
+  aspectRatio,
+  setAspectRatio,
+  style,
+  setStyle,
+  hdQuality,
+  setHdQuality,
+  numImages,
+  setNumImages,
+  setPrice,
+}: Readonly<ImageGenOptionsProps>) => {
   useEffect(() => {
     const price = estimateCost({
       aspectRatio,
@@ -55,17 +75,22 @@ export const ImageGenOptions = (
 
   return (
     <>
-      <div className="space-y-2 ">
+      <div className="space-y-2">
         {/* <Label htmlFor="aspect-ratio">Aspect Ratio</Label> */}
         <AspectRatioToggle
           aspectRatio={aspectRatio}
           setAspectRatio={setAspectRatio}
         />
       </div>
-      <div className="flex flex-row justify-between items-center">
+      <div className="flex flex-row items-center justify-between">
         <div className="space-y-2">
           {/* <Label htmlFor="style">Style</Label> */}
-          <ToggleGroup type="single" value={style} onValueChange={setStyle} className="justify-start">
+          <ToggleGroup
+            type="single"
+            value={style}
+            onValueChange={setStyle}
+            className="justify-start"
+          >
             <ToggleGroupItem value="natural" aria-label="Natural">
               Natural
             </ToggleGroupItem>
@@ -81,8 +106,8 @@ export const ImageGenOptions = (
           <TogglePrimitive.Root
             aria-label="Toggle HD Quality"
             className={cn(
-              "bg-transparent h-9 px-3 inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-muted hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground",
-              (hdQuality ? "text-primary" : "text-zinc-200")
+              "inline-flex h-9 items-center justify-center rounded-md bg-transparent px-3 text-sm font-medium transition-colors hover:bg-muted hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground",
+              hdQuality ? "text-primary" : "text-zinc-200"
             )}
             pressed={hdQuality}
             onPressedChange={() => setHdQuality(!hdQuality)}
@@ -105,4 +130,4 @@ export const ImageGenOptions = (
       <div className="h-4"></div>
     </>
   );
-}
+};

@@ -11,8 +11,11 @@ const ToggleGroupContext = createContext<VariantProps<typeof toggleVariants>>({
 });
 
 // Define the props for ToggleGroup, allowing both 'single' and 'multiple' types
-type ToggleGroupProps = (ToggleGroupPrimitive.ToggleGroupSingleProps | ToggleGroupPrimitive.ToggleGroupMultipleProps) & VariantProps<typeof toggleVariants>;
-
+type ToggleGroupProps = (
+  | ToggleGroupPrimitive.ToggleGroupSingleProps
+  | ToggleGroupPrimitive.ToggleGroupMultipleProps
+) &
+  VariantProps<typeof toggleVariants>;
 
 // ForwardRef with appropriate type annotations
 const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(
@@ -32,7 +35,8 @@ const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(
 ToggleGroup.displayName = ToggleGroupPrimitive.Root.displayName;
 
 // Define the props for ToggleGroupItem
-type ToggleGroupItemProps = ToggleGroupPrimitive.ToggleGroupItemProps & VariantProps<typeof toggleVariants>;
+type ToggleGroupItemProps = ToggleGroupPrimitive.ToggleGroupItemProps &
+  VariantProps<typeof toggleVariants>;
 
 // ForwardRef for ToggleGroupItem with appropriate type annotations
 const ToggleGroupItem = forwardRef<HTMLButtonElement, ToggleGroupItemProps>(
