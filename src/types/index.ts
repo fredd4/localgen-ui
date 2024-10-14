@@ -1,1 +1,1 @@
-export * from "./image-generation";
+export * from "./imageGeneration";

@@ -1,15 +1,15 @@
-import { useEffect, useState } from "preact/hooks";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
-  hasSetting,
   getSetting,
-  setSetting,
+  hasSetting,
   removeSetting,
+  setSetting,
 } from "@/lib/idb/settingsStore";
-import { apiKeySetting } from "@/config/idbSettings";
-import { Button } from "@/components/ui/button";
+import { apiKeySetting } from "@/store/idbSettings";
 import { motion } from "framer-motion";
-import { CheckCircle, XCircle, Loader2 } from "lucide-react";
+import { CheckCircle, Loader2, XCircle } from "lucide-react";
+import { useEffect, useState } from "preact/hooks";
 
 export const ApiKeyInput = () => {
   const [apiKey, setApiKey] = useState<string>("");
