@@ -28,6 +28,12 @@ const ImageCard = ({ image, index }: ImageCardProps) => (
         <RotateCwIcon className="mr-2 h-4 w-4" />
         Rotate
       </Button>
+      <div className="flex flex-col items-center text-xs">
+        <span>Date: {getFormattedDate(image.createdAt)}</span>
+        <span>GenId: {image.generationId}</span>
+        <span>Id: {image.id}</span>
+        <span>Cost: ${image.cost.toFixed(2)}</span>
+      </div>
       <Button
         variant="ghost"
         size="sm"
