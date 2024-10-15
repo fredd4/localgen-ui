@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { MAX_IMAGES, MIN_IMAGES } from "@/config/imageGeneration";
+import { useGenerateImages } from "@/hooks/useGenerateImages";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import {
   gaUseExactPromptAtom,
@@ -65,12 +66,17 @@ const ActionRow = () => {
   );
   const toggleGenerationOption = () =>
     setShowGenerationOption(!showGenerationOption);
+  const { generateImages, isGenerating } = useGenerateImages();
 
   return (
     <div className="flex h-10 w-full items-stretch space-x-1 rounded-lg sm:h-16 sm:space-x-2 sm:p-2 sm:shadow-md">
       <QuantitySelector />
 
-      <Button className="flex h-full flex-grow items-center bg-primary text-primary-foreground hover:bg-primary/90 sm:justify-between">
+      <Button
+        disabled={isGenerating}
+        className="flex h-full flex-grow items-center bg-primary text-primary-foreground hover:bg-primary/90 sm:justify-between"
+        onClick={generateImages}
+      >
         <p className="hidden font-mono text-sm text-primary opacity-80 sm:block">
           ${price.toFixed(2)}
         </p>
@@ -83,11 +89,10 @@ const ActionRow = () => {
       <Button
         variant={useExactPrompt ? "default" : "outline"}
         onClick={() => setUseExactPrompt(!useExactPrompt)}
-        className={`flex h-full w-24 flex-col items-center justify-center p-1 px-2 ${
-          useExactPrompt
+        className={`flex h-full w-24 flex-col items-center justify-center p-1 px-2 ${useExactPrompt
             ? "bg-primary text-primary-foreground"
             : "bg-background text-foreground"
-        }`}
+          }`}
         style={{ flexShrink: 0 }}
       >
         <span

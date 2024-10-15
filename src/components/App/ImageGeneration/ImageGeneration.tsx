@@ -67,7 +67,7 @@ const ImageGeneration = () => {
           {generatedImages.length > 0 && (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {generatedImages.map((img, index) => (
-                <ImageCard key={index} img={img} index={index} />
+                <ImageCard key={index} img={img.image} index={index} />
               ))}
             </div>
           )}
