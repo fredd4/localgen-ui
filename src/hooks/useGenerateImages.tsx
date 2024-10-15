@@ -1,3 +1,4 @@
+import { placeHolderSvgBase64 } from "@/assets/placeholderSvg";
 import {
   errorAtom,
   generatedImagesAtom,
