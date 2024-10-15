@@ -18,7 +18,6 @@ import ActionRow from "./ActionRow";
 import ImageCard from "./ImageCard";
 
 const ImageGeneration = () => {
-  const [prompt, setPrompt] = useState("");
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -67,9 +66,9 @@ const ImageGeneration = () => {
             <Textarea
               id="prompt"
               placeholder="Enter your prompt here..."
-              value={prompt}
-              onChange={(e) => setPrompt((e.target as HTMLInputElement).value)}
-              className="min-h-[200px]"
+              value={generationOptions.prompt}
+              onChange={(e) => setGenerationOptions({ ...generationOptions, prompt: (e.target as HTMLInputElement).value })}
+              className="min-h-[225px]"
             />
           </div>
           {showSettings && (

@@ -1,13 +1,12 @@
-import { defaultGenerationOptions } from "@/config/imageGeneration";
-import { GenerationOptions } from "@/types";
-import { useState } from "preact/hooks";
+import { generationOptionsAtom, priceAtom, showGenerationOptionsAtom } from "@/store/atoms";
+import { useAtom } from "jotai";
 
 export const useGenerationOptions = () => {
-  const [price, setPrice] = useState(0);
-  const [showSettings, setShowSettings] = useState(false);
+  const [price, setPrice] = useAtom(priceAtom)
+  const [showSettings, setShowSettings] = useAtom(showGenerationOptionsAtom);
   const toggleShowSettings = () => setShowSettings((prev) => !prev);
 
-  const [generationOptions, setGenerationOptions] = useState<GenerationOptions>(defaultGenerationOptions);
+  const [generationOptions, setGenerationOptions] = useAtom(generationOptionsAtom);
 
   return {
     price,
