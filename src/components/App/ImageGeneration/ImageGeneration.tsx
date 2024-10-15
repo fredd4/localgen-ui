@@ -23,7 +23,6 @@ const ImageGeneration = () => {
   const [error, setError] = useState<string | null>(null);
 
   const {
-    price,
     setPrice,
     showSettings,
     toggleShowSettings,
@@ -92,10 +91,6 @@ const ImageGeneration = () => {
             <Sparkles className="ml-2 h-4 w-4" />
           </Button> */}
         </CardFooter>
-        <div className="absolute bottom-0.5 right-6 flex flex-row items-center gap-2 text-xs">
-          <div className="text-foreground">Estimated Cost:</div>
-          <div className="text-muted-foreground">${price.toFixed(2)}</div>
-        </div>
       </Card>
       {error && (
         <Alert variant="destructive">
