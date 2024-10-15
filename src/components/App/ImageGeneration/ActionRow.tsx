@@ -68,21 +68,9 @@ const ActionRow = () => {
         <span className="text-xs mt-1">Exact Prompt</span>
       </Button>
 
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button variant="outline" className="aspect-square h-full p-0 flex-shrink-0">
-            <Settings />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-80">
-          <div className="grid gap-4">
-            <h3 className="font-medium">Advanced Options</h3>
-            <p className="text-sm text-muted-foreground">
-              Configure additional settings...
-            </p>
-          </div>
-        </PopoverContent>
-      </Popover>
+      <Button variant="outline" className="relative aspect-square h-full p-0 flex-shrink-0" onClick={toggleGenerationOption}>
+        <ImageSettingsIcon />
+      </Button>
     </div>
   );
 };
