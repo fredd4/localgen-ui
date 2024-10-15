@@ -5,12 +5,17 @@ import {
   SquareIcon,
 } from "lucide-react";
 
-export const defaultGenerationOptions = {
+export const MAX_IMAGES = 6;
+export const MIN_IMAGES = 1;
+
+export const defaultGenerationOptions: GenerationOptions = {
+  prompt: "",
+  useExactPrompt: false,
   aspectRatio: "square",
   style: "vivid",
   hdQuality: false,
-  numImages: 1,
-} as GenerationOptions;
+  numImages: MIN_IMAGES,
+} as const;
 
 export const aspectRatios = [
   {
