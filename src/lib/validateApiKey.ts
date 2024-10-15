@@ -6,8 +6,8 @@ export const validateApiKey = async (
   setIsApiKeyValid: (isValid: boolean) => void,
   setApiKey: (apiKey: string) => void,
   setError: (error: string) => void,
-  setLoading: (loading: boolean,
-  ) => void) => {
+  setLoading: (loading: boolean) => void
+) => {
   if (!key.startsWith("sk-")) {
     setError("Invalid API key format");
     setIsApiKeyValid(false);
@@ -17,15 +17,12 @@ export const validateApiKey = async (
   setLoading(true);
   setError("");
   try {
-    const response = await fetch(
-      "https://api.openai.com/v1/models/dall-e-3",
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${key}`,
-        },
-      }
-    );
+    const response = await fetch("https://api.openai.com/v1/models/dall-e-3", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${key}`,
+      },
+    });
     if (response.status === 200) {
       const data = await response.json();
       if (

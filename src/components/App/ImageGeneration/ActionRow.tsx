@@ -89,10 +89,11 @@ const ActionRow = () => {
       <Button
         variant={useExactPrompt ? "default" : "outline"}
         onClick={() => setUseExactPrompt(!useExactPrompt)}
-        className={`flex h-full w-24 flex-col items-center justify-center p-1 px-2 ${useExactPrompt
+        className={`flex h-full w-24 flex-col items-center justify-center p-1 px-2 ${
+          useExactPrompt
             ? "bg-primary text-primary-foreground"
             : "bg-background text-foreground"
-          }`}
+        }`}
         style={{ flexShrink: 0 }}
       >
         <span

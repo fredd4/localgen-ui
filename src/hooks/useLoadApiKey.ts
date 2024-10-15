@@ -5,31 +5,37 @@ import { apiKeySetting } from "@/store/idbSettings";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
 
-export const useLoadApiKey = (setError?: (error: string) => void, setLoading?: (loading: boolean) => void) => {
-  const [apiKey, setApiKey] = useAtom(apiKeyAtom)
+export const useLoadApiKey = (
+  setError?: (error: string) => void,
+  setLoading?: (loading: boolean) => void
+) => {
+  const [apiKey, setApiKey] = useAtom(apiKeyAtom);
   const [isApiKeyValid, setIsApiKeyValid] = useAtom(isApiKeyValidAtom);
   const dummyStringSetter = (value: string) => console.log(value);
   const dummyBooleanSetter = (value: boolean) => console.log(value);
 
   useEffect(() => {
     const loadApiKey = async () => {
-      if (setLoading)
-        setLoading(true);
+      if (setLoading) setLoading(true);
       try {
         const hasApiKeyStored = await hasSetting(apiKeySetting);
         if (hasApiKeyStored) {
           const storedApiKey = await getSetting(apiKeySetting);
           if (storedApiKey) {
             setApiKey(storedApiKey);
-            await validateApiKey(storedApiKey, setIsApiKeyValid, setApiKey, setError ?? dummyStringSetter, setLoading ?? dummyBooleanSetter);
+            await validateApiKey(
+              storedApiKey,
+              setIsApiKeyValid,
+              setApiKey,
+              setError ?? dummyStringSetter,
+              setLoading ?? dummyBooleanSetter
+            );
           }
         }
       } catch (error) {
-        if (setError)
-          setError((error as Error).message);
+        if (setError) setError((error as Error).message);
       } finally {
-        if (setLoading)
-          setLoading(false);
+        if (setLoading) setLoading(false);
       }
     };
 
@@ -37,4 +43,4 @@ export const useLoadApiKey = (setError?: (error: string) => void, setLoading?: (
   }, []);
 
   return { apiKey, setApiKey, isApiKeyValid, setIsApiKeyValid };
-}
+};

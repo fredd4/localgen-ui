@@ -11,7 +11,10 @@ import { useState } from "preact/hooks";
 export const ApiKeyInput = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  const {apiKey, setApiKey, isApiKeyValid, setIsApiKeyValid } = useLoadApiKey(setError, setLoading);
+  const { apiKey, setApiKey, isApiKeyValid, setIsApiKeyValid } = useLoadApiKey(
+    setError,
+    setLoading
+  );
 
   const onBlur = () => {
     if (apiKey) {
