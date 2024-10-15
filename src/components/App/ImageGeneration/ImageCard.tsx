@@ -1,17 +1,20 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MaximizeIcon, RotateCwIcon } from "lucide-react";
+import { GeneratedImage } from "@/types";
+import { getFormattedDate } from "@/lib/utils";
+
 
 interface ImageCardProps {
-  img: string;
+  image: GeneratedImage;
   index: number;
 }
 
-const ImageCard = ({ img, index }: ImageCardProps) => (
+const ImageCard = ({ image, index }: ImageCardProps) => (
   <Card key={index} className="overflow-hidden border-gray-700 bg-gray-800">
     <CardContent className="p-2">
       <img
-        src={img}
+        src={image.image}
         alt={`Generated image ${index + 1}`}
         className="h-auto w-full rounded-md"
       />

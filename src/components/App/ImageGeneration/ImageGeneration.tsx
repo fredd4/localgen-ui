@@ -2,15 +2,18 @@ import { ImageGenOptions } from "@/components/App/ImageGeneration/ImageGenOption
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { useGenerateImages } from "@/hooks/useGenerateImages";
 import { useGenerationOptions } from "@/hooks/useGenerationOptions";
+import { generatedImagesAtom } from "@/store/atoms";
 import { motion } from "framer-motion";
+import { useAtomValue } from 'jotai';
 import { useEffect } from "preact/hooks";
+import { useState } from "react";
 import ActionRow from "./ActionRow";
 import ImageCard from "./ImageCard";
 
 const ImageGeneration = () => {
-  const { error, generatedImages } = useGenerateImages();
+  const generatedImages = useAtomValue(generatedImagesAtom);
+  const [error,] = useState(false); /* TODO: Display Errors properly */
 
   const { price, showSettings, generationOptions, setGenerationOptions } =
     useGenerationOptions();
@@ -66,8 +69,8 @@ const ImageGeneration = () => {
         <div className="grid gap-4">
           {generatedImages.length > 0 && (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {generatedImages.map((img, index) => (
-                <ImageCard key={index} img={img.image} index={index} />
+              {generatedImages.map((image, index) => (
+                <ImageCard key={index} image={image} index={index} />
               ))}
             </div>
           )}
