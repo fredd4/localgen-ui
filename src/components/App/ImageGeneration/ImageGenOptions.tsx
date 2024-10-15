@@ -9,6 +9,7 @@ import * as TogglePrimitive from "@radix-ui/react-toggle";
 import { ChevronDownIcon, ChevronUpIcon, GemIcon } from "lucide-react";
 import { useEffect } from "react";
 import { AspectRatioToggle } from "./AspectRatioToggle";
+import { MAX_IMAGES, MIN_IMAGES } from "@/config/imageGeneration";
 
 interface ImageGenOptionsToggleProps {
   showSettings: boolean;
@@ -127,8 +128,8 @@ export const ImageGenOptions = ({
           Number of Images: {generationOptions.numImages}
         </Label>
         <InteractiveRangeSlider
-          min={1}
-          max={6}
+          min={MIN_IMAGES}
+          max={MAX_IMAGES}
           step={1}
           value={generationOptions.numImages}
           setValue={onNumImagesChange}
