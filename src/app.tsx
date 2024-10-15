@@ -1,29 +1,25 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Header from "@/components/App/Layout/Header";
-import ImageGeneration from "@/components/App/ImageGeneration/ImageGeneration";
 import History from "@/components/App/History/History";
-import Settings from "@/components/App/Settings/Settings";
-import { ClockIcon, ImageIcon, SettingsIcon } from "lucide-react";
+import ImageGeneration from "@/components/App/ImageGeneration/ImageGeneration";
+import Header from "@/components/App/Layout/Header";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ClockIcon, ImageIcon } from "lucide-react";
 
-const iconStyle = "w-4 h-4 mr-2";
+const iconStyle = "w-5 h-5 mr-2";
+const tabTriggerStyle = "flex items-center justify-center bg-muted text-muted-foreground border-border hover:bg-secondary hover:text-secondary-foreground focus:ring-ring active:bg-secondary active:text-secondary-foreground text-lg";
 
 const App = () => (
   <div className="min-h-screen bg-gray-100 p-8">
-    <div className="mx-auto max-w-6xl">
+    <div className="mx-auto max-w-4xl">
       <Header />
-      <Tabs defaultValue="generate" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3 rounded-lg bg-primary p-1 text-primary-foreground">
-          <TabsTrigger value="generate">
+      <Tabs defaultValue="generate">
+        <TabsList className="grid w-full grid-cols-2 rounded-lg bg-card text-card-foreground border-border">
+          <TabsTrigger value="generate" className={tabTriggerStyle}>
             <ImageIcon className={iconStyle} />
             Generate
           </TabsTrigger>
-          <TabsTrigger value="history">
+          <TabsTrigger value="history" className={tabTriggerStyle}>
             <ClockIcon className={iconStyle} />
             History
-          </TabsTrigger>
-          <TabsTrigger value="settings">
-            <SettingsIcon className={iconStyle} />
-            Settings
           </TabsTrigger>
         </TabsList>
         <TabsContent value="generate">
@@ -31,9 +27,6 @@ const App = () => (
         </TabsContent>
         <TabsContent value="history">
           <History />
-        </TabsContent>
-        <TabsContent value="settings">
-          <Settings />
         </TabsContent>
       </Tabs>
     </div>
