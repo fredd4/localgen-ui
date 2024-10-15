@@ -1,15 +1,6 @@
-import {
-  ImageGenOptions,
-  ImageGenOptionsToggle,
-} from "@/components/App/ImageGeneration/ImageGenOptions";
+import { ImageGenOptions } from "@/components/App/ImageGeneration/ImageGenOptions";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { useGenerateImages } from "@/hooks/useGenerateImages";
 import { useGenerationOptions } from "@/hooks/useGenerationOptions";
@@ -21,14 +12,8 @@ import ImageCard from "./ImageCard";
 const ImageGeneration = () => {
   const { error, generatedImages } = useGenerateImages();
 
-  const {
-    price,
-    setPrice,
-    showSettings,
-    toggleShowSettings,
-    generationOptions,
-    setGenerationOptions,
-  } = useGenerationOptions();
+  const { price, showSettings, generationOptions, setGenerationOptions } =
+    useGenerationOptions();
 
   useEffect(() => {
     console.log("generationOptions", generationOptions);
@@ -38,7 +23,7 @@ const ImageGeneration = () => {
     <>
       <Card className="relative">
         <CardContent className="flex space-x-4 pt-6">
-          <div className="flex-1 relative">
+          <div className="relative flex-1">
             <Textarea
               id="prompt"
               placeholder="Enter your prompt here..."
@@ -49,13 +34,14 @@ const ImageGeneration = () => {
                   prompt: (e.target as HTMLInputElement).value,
                 })
               }
-              className="min-h-[225px]" 
-            >
-            </Textarea>
+              className="min-h-[225px]"
+            ></Textarea>
             <div className="absolute bottom-1 right-3 flex flex-row items-center gap-2 text-xs sm:hidden">
-                <div className="text-muted-foreground">Estimated Cost:</div>
-                <div className="text-muted-foreground font-semibold">${price.toFixed(2)}</div>
+              <div className="text-muted-foreground">Estimated Cost:</div>
+              <div className="font-semibold text-muted-foreground">
+                ${price.toFixed(2)}
               </div>
+            </div>
           </div>
           {showSettings && (
             <div className="relative space-y-2">

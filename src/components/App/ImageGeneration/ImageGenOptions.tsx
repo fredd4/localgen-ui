@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { InteractiveRangeSlider } from "@/components/ui/slider";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
@@ -9,41 +8,14 @@ import { generationOptionsAtom, priceAtom } from "@/store/atoms";
 import { StyleValue } from "@/types";
 import * as TogglePrimitive from "@radix-ui/react-toggle";
 import { useAtom, useSetAtom } from "jotai";
-import { ChevronDownIcon, ChevronUpIcon, GemIcon } from "lucide-react";
+import { GemIcon } from "lucide-react";
 import { useEffect } from "react";
 import { AspectRatioToggle } from "./AspectRatioToggle";
 
-interface ImageGenOptionsToggleProps {
-  showSettings: boolean;
-  toggleShowSettings: () => void;
-}
-
-export const ImageGenOptionsToggle = ({
-  showSettings,
-  toggleShowSettings,
-}: Readonly<ImageGenOptionsToggleProps>) => {
-  return (
-    <div className="flex flex-row items-center">
-      <Button
-        variant="ghost"
-        size="sm"
-        className="flex items-center"
-        onClick={toggleShowSettings}
-      >
-        <p className="mr-1 pb-0.5 text-sm font-semibold">Generation Options</p>
-        {showSettings ? (
-          <ChevronUpIcon className="h-4 w-4" />
-        ) : (
-          <ChevronDownIcon className="h-4 w-4" />
-        )}
-        <span className="sr-only">Toggle settings for image generation</span>
-      </Button>
-    </div>
-  );
-};
-
 export const ImageGenOptions = () => {
-  const [generationOptions, setGenerationOptions] = useAtom(generationOptionsAtom);
+  const [generationOptions, setGenerationOptions] = useAtom(
+    generationOptionsAtom
+  );
   const setPrice = useSetAtom(priceAtom);
 
   useEffect(() => {

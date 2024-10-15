@@ -1,4 +1,8 @@
-import { errorAtom, generatedImagesAtom, isGeneratingAtom } from "@/store/atoms";
+import {
+  errorAtom,
+  generatedImagesAtom,
+  isGeneratingAtom,
+} from "@/store/atoms";
 import { useAtom } from "jotai";
 
 export const useGenerateImages = () => {
@@ -21,4 +25,4 @@ export const useGenerateImages = () => {
   };
 
   return { generateImages, isGenerating, generatedImages, error };
-}
+};

@@ -1,1 +1,1 @@
-![LD3UI-Logo](https://raw.githubusercontent.com/aliciusschroeder/local-dalle-3-ui/blob/main/doc/logo_darkmode_1500x1200.png)
+![LD3UI-Logo](https://raw.githubusercontent.com/aliciusschroeder/localgen-ui/refs/heads/main/doc/logo_darkmode_1500x1200.png)
