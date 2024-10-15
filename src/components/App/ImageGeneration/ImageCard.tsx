@@ -4,7 +4,6 @@ import { MaximizeIcon, RotateCwIcon } from "lucide-react";
 import { GeneratedImage } from "@/types";
 import { getFormattedDate } from "@/lib/utils";
 
-
 interface ImageCardProps {
   image: GeneratedImage;
   index: number;

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { MAX_IMAGES, MIN_IMAGES } from "@/config/imageGeneration";
-import { useAddImageGeneration } from '@/hooks/useAddImageGeneration';
+import { useAddImageGeneration } from "@/hooks/useAddImageGeneration";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import {
   gaUseExactPromptAtom,
@@ -20,7 +20,7 @@ const ActionRow = () => {
   );
   const toggleGenerationOption = () =>
     setShowGenerationOption(!showGenerationOption);
-  const generationOptions = useAtomValue(generationOptionsAtom)
+  const generationOptions = useAtomValue(generationOptionsAtom);
   const addNewImageGeneration = useAddImageGeneration();
   const handleGenerate = () => {
     addNewImageGeneration(generationOptions);

@@ -7,10 +7,10 @@ export function generatedImagesReducer(
   action: GeneratedImageAction
 ): GeneratedImage[] {
   switch (action.type) {
-    case 'ADD_IMAGES':
+    case "ADD_IMAGES":
       return [...state, ...action.images];
-    case 'UPDATE_IMAGE':
-      return state.map(image =>
+    case "UPDATE_IMAGE":
+      return state.map((image) =>
         image.id === action.id ? { ...image, ...action.data } : image
       );
     default:

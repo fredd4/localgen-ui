@@ -35,11 +35,12 @@ export const getImage = async (key: string): Promise<GeneratedImage> => {
   return item.image;
 };
 
-export const addImage = async (
-  image: GeneratedImage
-): Promise<void> => {
+export const addImage = async (image: GeneratedImage): Promise<void> => {
   try {
-    await dbManager.saveItem<Image>(SETTINGS_STORE_NAME, {key: image.id, image});
+    await dbManager.saveItem<Image>(SETTINGS_STORE_NAME, {
+      key: image.id,
+      image,
+    });
   } catch (error) {
     throw new Error(`Failed to save image with key "${image.id}": ${error}`);
   }

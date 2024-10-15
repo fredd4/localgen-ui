@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useGenerationOptions } from "@/hooks/useGenerationOptions";
 import { generatedImagesAtom } from "@/store/atoms";
 import { motion } from "framer-motion";
-import { useAtomValue } from 'jotai';
+import { useAtomValue } from "jotai";
 import { useEffect } from "preact/hooks";
 import { useState } from "react";
 import ActionRow from "./ActionRow";
@@ -13,7 +13,7 @@ import ImageCard from "./ImageCard";
 
 const ImageGeneration = () => {
   const generatedImages = useAtomValue(generatedImagesAtom);
-  const [error,] = useState(false); /* TODO: Display Errors properly */
+  const [error] = useState(false); /* TODO: Display Errors properly */
 
   const { price, showSettings, generationOptions, setGenerationOptions } =
     useGenerationOptions();
