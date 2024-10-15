@@ -37,16 +37,7 @@ const ImageGeneration = () => {
   return (
     <>
       <Card className="relative">
-        <CardHeader>
-          <div className="flex flex-row items-center justify-between">
-            <CardTitle>Image Generation</CardTitle>
-            <ImageGenOptionsToggle
-              showSettings={showSettings}
-              toggleShowSettings={toggleShowSettings}
-            />
-          </div>
-        </CardHeader>
-        <CardContent className="flex space-x-4">
+        <CardContent className="flex space-x-4 pt-6">
           <div className="flex-1 relative">
             <Textarea
               id="prompt"
