@@ -11,3 +11,15 @@ export interface GenerationOptions {
   hdQuality: boolean;
   numImages: number;
 }
+
+type GeneratedImageState = "pending" | "success" | "error";
+export interface GeneratedImage {
+  id: string;
+  generationId: string;
+  state: GeneratedImageState;
+  locallySaved: boolean;
+  usedOptions: GenerationOptions;
+  image: string;
+  revisedPrompt: string;
+  cost: number;
+}
