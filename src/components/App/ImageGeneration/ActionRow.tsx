@@ -67,15 +67,15 @@ const ActionRow = () => {
     setShowGenerationOption(!showGenerationOption);
 
   return (
-    <div className="flex h-16 w-full items-stretch space-x-2 rounded-lg p-2 shadow-md">
+    <div className="flex h-10 sm:h-16 w-full items-stretch rounded-lg space-x-1 sm:p-2 sm:space-x-2 sm:shadow-md">
       <QuantitySelector />
 
-      <Button className="flex h-full flex-grow items-center justify-between bg-primary text-primary-foreground hover:bg-primary/90">
-        <p className="invisible font-mono text-sm opacity-80">
+      <Button className="flex h-full flex-grow items-center sm:justify-between bg-primary text-primary-foreground hover:bg-primary/90">
+        <p className="hidden sm:block text-primary font-mono text-sm opacity-80">
           ${price.toFixed(2)}
         </p>
         <p className="text-lg font-bold">Generate</p>
-        <p className="font-mono text-sm opacity-80">${price.toFixed(2)}</p>
+        <p className="hidden sm:block font-mono text-sm opacity-80">${price.toFixed(2)}</p>
       </Button>
 
       <Button
@@ -89,11 +89,11 @@ const ActionRow = () => {
         style={{ flexShrink: 0 }}
       >
         <span
-          className={`text-base ${useExactPrompt ? "font-bold" : "font-semibold"}`}
+          className={`sm:text-base ${useExactPrompt ? "font-bold" : "font-semibold"}`}
         >
           {useExactPrompt ? "ON" : "OFF"}
         </span>
-        <span className="mt-1 text-xs">Exact Prompt</span>
+        <span className="sm:mt-1 text-xs">Exact Prompt</span>
       </Button>
 
       <Button

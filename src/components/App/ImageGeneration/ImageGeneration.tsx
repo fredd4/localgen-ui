@@ -22,6 +22,7 @@ const ImageGeneration = () => {
   const { error, generatedImages } = useGenerateImages();
 
   const {
+    price,
     setPrice,
     showSettings,
     toggleShowSettings,
@@ -46,7 +47,7 @@ const ImageGeneration = () => {
           </div>
         </CardHeader>
         <CardContent className="flex space-x-4">
-          <div className="flex-1">
+          <div className="flex-1 relative">
             <Textarea
               id="prompt"
               placeholder="Enter your prompt here..."
@@ -57,8 +58,13 @@ const ImageGeneration = () => {
                   prompt: (e.target as HTMLInputElement).value,
                 })
               }
-              className="min-h-[225px]"
-            />
+              className="min-h-[225px]" 
+            >
+            </Textarea>
+            <div className="absolute bottom-1 right-3 flex flex-row items-center gap-2 text-xs sm:hidden">
+                <div className="text-muted-foreground">Estimated Cost:</div>
+                <div className="text-muted-foreground font-semibold">${price.toFixed(2)}</div>
+              </div>
           </div>
           {showSettings && (
             <div className="relative space-y-2">
