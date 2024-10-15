@@ -3,19 +3,15 @@ import { Input } from "@/components/ui/input";
 import { useLoadApiKey } from "@/hooks/useLoadApiKey";
 import { removeSetting } from "@/lib/idb/settingsStore";
 import { validateApiKey } from "@/lib/validateApiKey";
-import { apiKeyAtom, isApiKeyValidAtom } from "@/store/atoms";
 import { apiKeySetting } from "@/store/idbSettings";
 import { motion } from "framer-motion";
-import { useAtom } from "jotai";
 import { CheckCircle, Loader2, XCircle } from "lucide-react";
 import { useState } from "preact/hooks";
 
 export const ApiKeyInput = () => {
-  const [apiKey, setApiKey] = useAtom(apiKeyAtom);
-  const [isApiKeyValid, setIsApiKeyValid] = useAtom(isApiKeyValidAtom);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  useLoadApiKey(setError, setLoading);
+  const {apiKey, setApiKey, isApiKeyValid, setIsApiKeyValid } = useLoadApiKey(setError, setLoading);
 
   const onBlur = () => {
     if (apiKey) {

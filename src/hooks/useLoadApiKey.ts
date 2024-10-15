@@ -2,12 +2,12 @@ import { getSetting, hasSetting } from "@/lib/idb/settingsStore";
 import { validateApiKey } from "@/lib/validateApiKey";
 import { apiKeyAtom, isApiKeyValidAtom } from "@/store/atoms";
 import { apiKeySetting } from "@/store/idbSettings";
-import { useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 import { useEffect } from "react";
 
 export const useLoadApiKey = (setError?: (error: string) => void, setLoading?: (loading: boolean) => void) => {
-  const setApiKey = useSetAtom(apiKeyAtom)
-  const setIsApiKeyValid = useSetAtom(isApiKeyValidAtom);
+  const [apiKey, setApiKey] = useAtom(apiKeyAtom)
+  const [isApiKeyValid, setIsApiKeyValid] = useAtom(isApiKeyValidAtom);
   const dummyStringSetter = (value: string) => console.log(value);
   const dummyBooleanSetter = (value: boolean) => console.log(value);
 
@@ -35,4 +35,6 @@ export const useLoadApiKey = (setError?: (error: string) => void, setLoading?: (
 
     loadApiKey();
   }, []);
+
+  return { apiKey, setApiKey, isApiKeyValid, setIsApiKeyValid };
 }
