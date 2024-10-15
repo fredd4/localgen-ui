@@ -5,6 +5,7 @@ interface InteractiveRangeSliderProps {
   value: number;
   setValue: (value: number) => void;
 }
+
 const InteractiveRangeSlider = ({
   min,
   max,
@@ -24,7 +25,7 @@ const InteractiveRangeSlider = ({
 
   return (
     <div className="mx-auto max-w-md">
-      <div className="mb-4">
+      <div>
         <input
           type="range"
           value={value}

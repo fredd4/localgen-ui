@@ -122,7 +122,7 @@ export const ImageGenOptions = ({
           </TogglePrimitive.Root>
         </div>
       </div>
-      <div className="">
+      <div>
         <Label htmlFor="num-images">
           Number of Images: {generationOptions.numImages}
         </Label>
@@ -134,7 +134,6 @@ export const ImageGenOptions = ({
           setValue={onNumImagesChange}
         />
       </div>
-      <div className="h-4"></div>
     </>
   );
 };
