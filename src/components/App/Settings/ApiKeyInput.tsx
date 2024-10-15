@@ -1,94 +1,25 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  getSetting,
-  hasSetting,
-  removeSetting,
-  setSetting,
-} from "@/lib/idb/settingsStore";
+import { useLoadApiKey } from "@/hooks/useLoadApiKey";
+import { removeSetting } from "@/lib/idb/settingsStore";
+import { validateApiKey } from "@/lib/validateApiKey";
+import { apiKeyAtom, isApiKeyValidAtom } from "@/store/atoms";
 import { apiKeySetting } from "@/store/idbSettings";
 import { motion } from "framer-motion";
+import { useAtom } from "jotai";
 import { CheckCircle, Loader2, XCircle } from "lucide-react";
-import { useEffect, useState } from "preact/hooks";
+import { useState } from "preact/hooks";
 
 export const ApiKeyInput = () => {
-  const [apiKey, setApiKey] = useState<string>("");
+  const [apiKey, setApiKey] = useAtom(apiKeyAtom);
+  const [isApiKeyValid, setIsApiKeyValid] = useAtom(isApiKeyValidAtom);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  const [isApiKeyValid, setIsApiKeyValid] = useState<boolean>(false);
-
-  useEffect(() => {
-    const loadApiKey = async () => {
-      setLoading(true);
-      try {
-        const hasApiKeyStored = await hasSetting(apiKeySetting);
-        if (hasApiKeyStored) {
-          const storedApiKey = await getSetting(apiKeySetting);
-          if (storedApiKey) {
-            setApiKey(storedApiKey);
-            await validateApiKey(storedApiKey);
-          }
-        }
-      } catch (error) {
-        setError((error as Error).message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadApiKey();
-  }, []);
-
-  const validateApiKey = async (key: string) => {
-    if (!key.startsWith("sk-")) {
-      setError("Invalid API key format");
-      setIsApiKeyValid(false);
-      setApiKey("");
-      return;
-    }
-    setLoading(true);
-    setError("");
-    try {
-      const response = await fetch(
-        "https://api.openai.com/v1/models/dall-e-3",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${key}`,
-          },
-        }
-      );
-      if (response.status === 200) {
-        const data = await response.json();
-        if (
-          data.id === "dall-e-3" &&
-          data.object === "model" &&
-          data.owned_by === "system"
-        ) {
-          setIsApiKeyValid(true);
-          await setSetting(apiKeySetting, key);
-        } else {
-          setError("API key is invalid");
-          setIsApiKeyValid(false);
-          setApiKey("");
-        }
-      } else {
-        setError("API key is invalid");
-        setIsApiKeyValid(false);
-        setApiKey("");
-      }
-    } catch {
-      setError("An error occurred during validation");
-      setIsApiKeyValid(false);
-      setApiKey("");
-    } finally {
-      setLoading(false);
-    }
-  };
+  useLoadApiKey(setError, setLoading);
 
   const onBlur = () => {
     if (apiKey) {
-      validateApiKey(apiKey);
+      validateApiKey(apiKey, setIsApiKeyValid, setApiKey, setError, setLoading);
     }
   };
 

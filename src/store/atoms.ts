@@ -17,3 +17,6 @@ export const isGeneratingAtom = atom(false);
 export const generatedImagesAtom = atom<string[]>([]);
 export const errorAtom = atom<string | null>(null);
 export const priceAtom = atom(estimateCost(defaultGenerationOptions));
+
+export const apiKeyAtom = atom("");
+export const isApiKeyValidAtom = atom(false);
