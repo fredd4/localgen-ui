@@ -62,11 +62,7 @@ const ImageGeneration = () => {
           </div>
           {showSettings && (
             <div className="relative space-y-2">
-              <ImageGenOptions
-                generationOptions={generationOptions}
-                setGenerationOptions={setGenerationOptions}
-                setPrice={setPrice}
-              />
+              <ImageGenOptions />
             </div>
           )}
         </CardContent>

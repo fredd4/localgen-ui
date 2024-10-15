@@ -2,24 +2,20 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { InteractiveRangeSlider } from "@/components/ui/slider";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { MAX_IMAGES, MIN_IMAGES } from "@/config/imageGeneration";
 import { estimateCost } from "@/lib/costEstimation";
 import { cn } from "@/lib/utils";
-import { GenerationOptions, StyleValue } from "@/types";
+import { generationOptionsAtom, priceAtom } from "@/store/atoms";
+import { StyleValue } from "@/types";
 import * as TogglePrimitive from "@radix-ui/react-toggle";
+import { useAtom, useSetAtom } from "jotai";
 import { ChevronDownIcon, ChevronUpIcon, GemIcon } from "lucide-react";
 import { useEffect } from "react";
 import { AspectRatioToggle } from "./AspectRatioToggle";
-import { MAX_IMAGES, MIN_IMAGES } from "@/config/imageGeneration";
 
 interface ImageGenOptionsToggleProps {
   showSettings: boolean;
   toggleShowSettings: () => void;
-}
-
-interface ImageGenOptionsProps {
-  generationOptions: GenerationOptions;
-  setGenerationOptions: (options: GenerationOptions) => void;
-  setPrice: (price: number) => void;
 }
 
 export const ImageGenOptionsToggle = ({
@@ -46,11 +42,10 @@ export const ImageGenOptionsToggle = ({
   );
 };
 
-export const ImageGenOptions = ({
-  generationOptions,
-  setGenerationOptions,
-  setPrice,
-}: Readonly<ImageGenOptionsProps>) => {
+export const ImageGenOptions = () => {
+  const [generationOptions, setGenerationOptions] = useAtom(generationOptionsAtom);
+  const setPrice = useSetAtom(priceAtom);
+
   useEffect(() => {
     const price = estimateCost(generationOptions);
     setPrice(price);
