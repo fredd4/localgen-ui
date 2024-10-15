@@ -2,10 +2,7 @@ import * as React from "react";
 
 export function useMediaQuery(query: string) {
   const subscribe = React.useCallback(
-    (callback: {
-      (this: MediaQueryList, ev: MediaQueryListEvent): any;
-      (this: MediaQueryList, ev: MediaQueryListEvent): any;
-    }) => {
+    (callback: (event: MediaQueryListEvent) => void) => {
       const matchMedia = window.matchMedia(query);
 
       matchMedia.addEventListener("change", callback);
