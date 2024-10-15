@@ -4,6 +4,7 @@ export type AspectRatioValue = AspectRatioSetting["value"];
 export type StyleValue = "natural" | "vivid";
 
 export interface GenerationOptions {
+  model: string;
   prompt: string;
   useExactPrompt: boolean;
   aspectRatio: AspectRatioValue;
@@ -12,7 +13,7 @@ export interface GenerationOptions {
   numImages: number;
 }
 
-type GeneratedImageState = "pending" | "success" | "error";
+type GeneratedImageState = "pending" | "generated" | "saved" | "error";
 export interface GeneratedImage {
   id: string;
   generationId: string;
@@ -21,5 +22,8 @@ export interface GeneratedImage {
   usedOptions: GenerationOptions;
   image: string;
   revisedPrompt: string;
+  error: string;
   cost: number;
+  createdAt: Date;
+  isProcessing?: boolean;
 }

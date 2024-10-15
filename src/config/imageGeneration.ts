@@ -9,6 +9,7 @@ export const MAX_IMAGES = 6;
 export const MIN_IMAGES = 1;
 
 export const defaultGenerationOptions: GenerationOptions = {
+  model: "dall-e-3",
   prompt: "",
   useExactPrompt: false,
   aspectRatio: "square",
