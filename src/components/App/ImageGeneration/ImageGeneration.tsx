@@ -66,7 +66,12 @@ const ImageGeneration = () => {
               id="prompt"
               placeholder="Enter your prompt here..."
               value={generationOptions.prompt}
-              onChange={(e) => setGenerationOptions({ ...generationOptions, prompt: (e.target as HTMLInputElement).value })}
+              onChange={(e) =>
+                setGenerationOptions({
+                  ...generationOptions,
+                  prompt: (e.target as HTMLInputElement).value,
+                })
+              }
               className="min-h-[225px]"
             />
           </div>

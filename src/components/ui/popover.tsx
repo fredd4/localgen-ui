@@ -11,7 +11,8 @@ const PopoverAnchor = PopoverPrimitive.Anchor;
 
 const PopoverContent = forwardRef<
   HTMLDivElement,
-  JSX.IntrinsicElements['div'] & React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
+  JSX.IntrinsicElements["div"] &
+    React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
 >(({ className, align = "center", sideOffset = 4, ...props }, ref) => (
   <PopoverPrimitive.Portal>
     <PopoverPrimitive.Content

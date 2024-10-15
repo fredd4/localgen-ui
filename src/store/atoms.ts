@@ -5,9 +5,13 @@ import { GenerationOptions } from "@/types";
 import { atom } from "jotai";
 
 export const showGenerationOptionsAtom = atom(false);
-export const generationOptionsAtom = atom<GenerationOptions>(defaultGenerationOptions);
-export const gaUseExactPromptAtom = createFieldAtom(generationOptionsAtom, "useExactPrompt")
-
+export const generationOptionsAtom = atom<GenerationOptions>(
+  defaultGenerationOptions
+);
+export const gaUseExactPromptAtom = createFieldAtom(
+  generationOptionsAtom,
+  "useExactPrompt"
+);
 
 export const isGeneratingAtom = atom(false);
 export const generatedImagesAtom = atom<string[]>([]);

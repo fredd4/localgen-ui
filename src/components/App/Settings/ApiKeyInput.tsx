@@ -49,12 +49,15 @@ export const ApiKeyInput = () => {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch("https://api.openai.com/v1/models/dall-e-3", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${key}`,
-        },
-      });
+      const response = await fetch(
+        "https://api.openai.com/v1/models/dall-e-3",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${key}`,
+          },
+        }
+      );
       if (response.status === 200) {
         const data = await response.json();
         if (
@@ -103,31 +106,25 @@ export const ApiKeyInput = () => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto mt-8">
+    <div className="mx-auto mt-8 w-full max-w-md">
       {loading ? (
-        <div className="flex items-center justify-center h-20">
-          <Loader2 className="w-8 h-8 animate-spin text-gray-500" />
+        <div className="flex h-20 items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
         </div>
       ) : (
         <div className="space-y-6">
           {error && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              <div className="text-red-600 flex items-center">
-                <XCircle className="w-5 h-5 mr-2" /> {error}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <div className="flex items-center text-red-600">
+                <XCircle className="mr-2 h-5 w-5" /> {error}
               </div>
             </motion.div>
           )}
           {isApiKeyValid ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              <div className="flex items-center justify-between bg-green-100 p-4 rounded-lg">
-                <div className="text-green-700 flex items-center">
-                  <CheckCircle className="w-6 h-6 mr-2" /> Your API key is valid
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <div className="flex items-center justify-between rounded-lg bg-green-100 p-4">
+                <div className="flex items-center text-green-700">
+                  <CheckCircle className="mr-2 h-6 w-6" /> Your API key is valid
                 </div>
                 <Button variant="destructive" onClick={onRemoveButtonClick}>
                   Remove
@@ -145,7 +142,7 @@ export const ApiKeyInput = () => {
                 }
                 onBlur={onBlur}
                 placeholder="Enter your OpenAI API key"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </motion.div>
           )}
