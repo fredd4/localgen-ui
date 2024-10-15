@@ -11,16 +11,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { useGenerateImages } from "@/hooks/useGenerateImages";
 import { useGenerationOptions } from "@/hooks/useGenerationOptions";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "preact/hooks";
+import { useEffect } from "preact/hooks";
 import ActionRow from "./ActionRow";
 import ImageCard from "./ImageCard";
 
 const ImageGeneration = () => {
-  const [generatedImages, setGeneratedImages] = useState<string[]>([]);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { error, generatedImages } = useGenerateImages();
 
   const {
     setPrice,
@@ -33,20 +32,6 @@ const ImageGeneration = () => {
   useEffect(() => {
     console.log("generationOptions", generationOptions);
   }, [generationOptions]);
-
-  const handleGenerate = () => {
-    setIsGenerating(true);
-    setTimeout(() => {
-      setGeneratedImages([
-        "/placeholder.svg?height=512&width=512",
-        "/placeholder.svg?height=512&width=512",
-        "/placeholder.svg?height=512&width=512",
-        "/placeholder.svg?height=512&width=512",
-      ]);
-      setError("Something went wrong!");
-      setIsGenerating(false);
-    }, 2000);
-  };
 
   return (
     <>
@@ -87,14 +72,6 @@ const ImageGeneration = () => {
         </CardContent>
         <CardFooter>
           <ActionRow />
-          {/* <Button
-            onClick={handleGenerate}
-            disabled={isGenerating}
-            className="w-full"
-          >
-            {isGenerating ? "Generating..." : "Generate Images"}
-            <Sparkles className="ml-2 h-4 w-4" />
-          </Button> */}
         </CardFooter>
       </Card>
       {error && (
