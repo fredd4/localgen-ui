@@ -36,3 +36,20 @@ export function createFieldAtom<T extends object, K extends keyof T>(
     }
   );
 }
+
+/**
+ * Generates a formatted date string in the format "YYYY-MMM-DD HH:MM".
+ *
+ * This function creates a date string suitable for displaying timestamps or logging purposes.
+ * It uses the current date and time and formats it with year, abbreviated month, day, hours, and minutes.
+ *
+ * @returns The formatted date string.
+ */
+export function getFormattedDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = date.toLocaleString('default', { month: 'short' });
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+}
