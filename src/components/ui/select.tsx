@@ -1,4 +1,4 @@
-/* import {
+import {
   ChevronsUpDown as CaretSortIcon,
   CheckIcon,
   ChevronDownIcon,
@@ -158,4 +158,4 @@ export {
   SelectScrollUpButton,
   SelectScrollDownButton,
 };
- */
+

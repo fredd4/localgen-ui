@@ -10,6 +10,8 @@ import { useAtom } from "jotai";
 import { GemIcon } from "lucide-react";
 import { AspectRatioToggle } from "./AspectRatioToggle";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { smallDeviceMediaQuery } from "@/config/app";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const ImageGenOptions = () => {
   const isSmallDevice = useMediaQuery(smallDeviceMediaQuery);
@@ -84,7 +86,21 @@ export const ImageGenOptions = () => {
           </TogglePrimitive.Root>
         </div>
       </div>
-      <div>
+      <div className="flex justify-between items-center">
+        <label htmlFor="model" className="font-medium text-sm mr-2">Model:</label>
+        <Select defaultValue="dall-e-3" disabled>
+          <SelectTrigger>
+            <SelectValue id="model" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>OpenAI</SelectLabel>
+              <SelectItem value="dall-e-3">DALL-E 3</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className={"" + (!isSmallDevice && " hidden")}>
         <Label htmlFor="num-images">
           Number of Images: {generationOptions.numImages}
         </Label>
