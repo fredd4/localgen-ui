@@ -6,8 +6,10 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { ApiKeyInput } from "./ApiKeyInput";
+import { useManageSavedImages } from "@/hooks/useManageSavedImages";
 
 const Settings = () => {
+  const {savedImagesCount, savedImagesCost} = useManageSavedImages();
   return (
     <Card>
       <CardHeader>
@@ -25,8 +27,8 @@ const Settings = () => {
         </div>
         <div className="space-y-2">
           <label className="text-sm font-medium">Usage</label>
-          <p className="text-sm text-gray-500">Total cost: $0.00</p>
-          <p className="text-sm text-gray-500">Images generated: 0</p>
+          <p className="text-sm text-gray-500">Total cost: ${savedImagesCost.toFixed(2)}</p>
+          <p className="text-sm text-gray-500">Images generated: {savedImagesCount}</p>
         </div>
       </CardContent>
     </Card>
