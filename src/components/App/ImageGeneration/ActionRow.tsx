@@ -11,6 +11,7 @@ import {
 import { useAtom, useAtomValue } from "jotai";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import ImageSettingsIcon from "./ImageSettingsIcon";
+import { smallDeviceMediaQuery } from "@/config/app";
 
 const ActionRow = () => {
   const [useExactPrompt, setUseExactPrompt] = useAtom(gaUseExactPromptAtom);
@@ -74,7 +75,7 @@ const ActionRow = () => {
 };
 
 const QuantitySelector = () => {
-  const isSmallDevice = useMediaQuery("only screen and (max-width : 530px)");
+  const isSmallDevice = useMediaQuery(smallDeviceMediaQuery);
   const [generationOptions, setGenerationOptions] = useAtom(
     generationOptionsAtom
   );

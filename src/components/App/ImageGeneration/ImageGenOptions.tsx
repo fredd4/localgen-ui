@@ -9,8 +9,10 @@ import * as TogglePrimitive from "@radix-ui/react-toggle";
 import { useAtom } from "jotai";
 import { GemIcon } from "lucide-react";
 import { AspectRatioToggle } from "./AspectRatioToggle";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export const ImageGenOptions = () => {
+  const isSmallDevice = useMediaQuery(smallDeviceMediaQuery);
   const [generationOptions, setGenerationOptions] = useAtom(
     generationOptionsAtom
   );
