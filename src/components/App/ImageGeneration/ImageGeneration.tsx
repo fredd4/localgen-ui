@@ -9,7 +9,7 @@ import { useAtomValue } from "jotai";
 import { useEffect } from "preact/hooks";
 import { useState } from "react";
 import ActionRow from "./ActionRow";
-import ImageCard from "./ImageCard";
+import ImageCard from "@/components/ImageCard";
 
 const ImageGeneration = () => {
   const generatedImages = useAtomValue(generatedImagesAtom);
@@ -70,7 +70,7 @@ const ImageGeneration = () => {
           {generatedImages.length > 0 && (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {generatedImages.map((image, index) => (
-                <ImageCard key={index} image={image} index={index} />
+                <ImageCard key={index} generatedImage={image} />
               ))}
             </div>
           )}
