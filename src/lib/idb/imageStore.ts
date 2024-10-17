@@ -5,9 +5,9 @@ import {
   type StoreItem,
 } from "./universalIndexedDBOperations";
 
-const SETTINGS_DB_NAME = "ImageStore";
-const SETTINGS_STORE_NAME = "images";
-const SETTINGS_DB_VERSION = 1;
+const IMAGES_DB_NAME = "ImageStore";
+const IMAGES_STORE_NAME = "images";
+const IMAGES_DB_VERSION = 1;
 
 interface Image extends StoreItem {
   key: string;
@@ -15,10 +15,10 @@ interface Image extends StoreItem {
 }
 
 const dbConfig: DatabaseConfig = {
-  name: SETTINGS_DB_NAME,
-  version: SETTINGS_DB_VERSION,
+  name: IMAGES_DB_NAME,
+  version: IMAGES_DB_VERSION,
   stores: {
-    [SETTINGS_STORE_NAME]: {
+    [IMAGES_STORE_NAME]: {
       keyPath: "key",
       autoIncrement: false,
     },
@@ -28,7 +28,7 @@ const dbConfig: DatabaseConfig = {
 const dbManager = new IndexedDBManager(dbConfig);
 
 export const getImage = async (key: string): Promise<GeneratedImage> => {
-  const item = await dbManager.getItem<Image>(SETTINGS_STORE_NAME, key);
+  const item = await dbManager.getItem<Image>(IMAGES_STORE_NAME, key);
   if (!item) {
     throw new Error(`Image with key "${key}" not found`);
   }
@@ -37,7 +37,7 @@ export const getImage = async (key: string): Promise<GeneratedImage> => {
 
 export const addImage = async (image: GeneratedImage): Promise<void> => {
   try {
-    await dbManager.saveItem<Image>(SETTINGS_STORE_NAME, {
+    await dbManager.saveItem<Image>(IMAGES_STORE_NAME, {
       key: image.id,
       image,
     });
@@ -48,7 +48,7 @@ export const addImage = async (image: GeneratedImage): Promise<void> => {
 
 export const removeImage = async (key: string): Promise<void> => {
   try {
-    await dbManager.deleteItem(SETTINGS_STORE_NAME, key);
+    await dbManager.deleteItem(IMAGES_STORE_NAME, key);
   } catch (error) {
     throw new Error(`Failed to remove image for key "${key}": ${error}`);
   }
@@ -56,13 +56,23 @@ export const removeImage = async (key: string): Promise<void> => {
 
 export const clearImages = async (): Promise<void> => {
   try {
-    await dbManager.clearStore(SETTINGS_STORE_NAME);
+    await dbManager.clearStore(IMAGES_STORE_NAME);
   } catch (error) {
     throw new Error(`Failed to clear images store: ${error}`);
   }
 };
 
 export const hasImage = async (key: string): Promise<boolean> => {
-  const item = await dbManager.getItem<Image>(SETTINGS_STORE_NAME, key);
+  const item = await dbManager.getItem<Image>(IMAGES_STORE_NAME, key);
   return !!item;
+};
+
+export const getAllImages = async (): Promise<GeneratedImage[]> => {
+  const items = await dbManager.getAllItems<Image>(IMAGES_STORE_NAME);
+  return items.map((item) => item.image);
+};
+
+export const getImagesCount = async (): Promise<number> => {
+  const count = await dbManager.countItems(IMAGES_STORE_NAME);
+  return count;
 };

@@ -186,6 +186,17 @@ class IndexedDBManager {
       };
     });
   }
+
+  async countItems(storeName: string): Promise<number> {
+    const db = await this.openDatabase();
+    const transaction = db.transaction([storeName], "readonly");
+    const store = transaction.objectStore(storeName);
+    const request = store.count();
+    return new Promise<number>((resolve, reject) => {
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(new Error("Failed to count items"));
+    });
+  };
 }
 
 export { IndexedDBManager, type DatabaseConfig, type StoreItem };
