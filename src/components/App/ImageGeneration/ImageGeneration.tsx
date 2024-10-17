@@ -37,9 +37,9 @@ const ImageGeneration = () => {
                   prompt: (e.target as HTMLInputElement).value,
                 })
               }
-              className="min-h-[225px]"
+              className="min-h-[260px] sm:min-h-[185px]"
             ></Textarea>
-            <div className="absolute bottom-1 right-3 flex flex-row items-center gap-2 text-xs sm:hidden">
+            <div className={"absolute bottom-1 right-3 flex flex-row items-center gap-2 text-xs sm:hidden" + (showSettings && " hidden")}>
               <div className="text-muted-foreground">Estimated Cost:</div>
               <div className="font-semibold text-muted-foreground">
                 ${price.toFixed(2)}
