@@ -1,12 +1,13 @@
 import { fetchImage } from "@/lib/api/fetchImage";
 import { addImage as saveImageLocally } from "@/lib/idb/imageStore";
-import { generatedImagesAtom } from "@/store/atoms";
+import { apiKeyAtom, generatedImagesAtom } from "@/store/atoms";
 import { GeneratedImage } from "@/types";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { useEffect } from "react";
 
 export function useImageGeneration() {
   const [images, dispatch] = useAtom(generatedImagesAtom);
+  const apiKey = useAtomValue(apiKeyAtom);
 
   useEffect(() => {
     const pendingImages = images.filter(
@@ -22,7 +23,7 @@ export function useImageGeneration() {
 
       (async () => {
         try {
-          const result = await fetchImage(image.usedOptions);
+          const result = await fetchImage(image.usedOptions, apiKey);
           const updatedImage: GeneratedImage = {
             ...image,
             image: result.url, // The generated image URL
@@ -37,7 +38,7 @@ export function useImageGeneration() {
             data: updatedImage,
           });
 
-          await saveImageLocally(updatedImage);
+          await saveImageLocally({ ...updatedImage, locallySaved: true });
 
           dispatch({
             type: "UPDATE_IMAGE",
