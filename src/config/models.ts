@@ -2,7 +2,9 @@ import { ModelSettings } from "@/types/models";
 
 export const modelSettings: ModelSettings = {
   "dall-e-3": {
-    max_prompt_length: 4000,
+    displayName: "DALL-E 3",
+    company: "OpenAI",
+    maxPromptLength: 4000,
     sizes: {
       square: "1024x1024",
       horizontal: "1792x1024",
@@ -10,6 +12,8 @@ export const modelSettings: ModelSettings = {
     },
   },
   "dall-e-2": {
-    max_prompt_length: 1000,
+    displayName: "DALL-E 2",
+    company: "OpenAI",
+    maxPromptLength: 1000,
   },
 } as const;

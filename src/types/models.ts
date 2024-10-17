@@ -1,10 +1,13 @@
-import { models } from "@/config/supportedModels";
+import { companies, models } from "@/config/supportedModels";
 
 export type Model = (typeof models)[number];
+export type Company = (typeof companies)[number];
 
 export type ModelSettings = {
   [key in Model]: {
-    max_prompt_length: number;
+    maxPromptLength: number;
+    displayName: string;
+    company: Company;
     sizes?: {
       square: string;
       horizontal: string;
