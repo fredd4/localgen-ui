@@ -71,7 +71,7 @@ const ImageGeneration = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="grid gap-4">
+        <div className="grid gap-4 mt-4">
           {generatedImages.length > 0 && (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {generatedImages.slice().reverse().map((image, index) => (
