@@ -1,3 +1,4 @@
+import { placeHolderSvgBase64 } from "@/assets/placeholderSvg";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -14,7 +15,8 @@ import {
   DownloadIcon,
   ExpandIcon,
   InfoIcon,
-  Trash2Icon,
+  LoaderIcon,
+  Trash2Icon
 } from "lucide-react";
 import { useState } from "react";
 
@@ -26,18 +28,30 @@ export default function ImageCard({
   generatedImage,
 }: Readonly<ImageCardProperties>) {
   const [showRevisedPrompt, setShowRevisedPrompt] = useState(false);
-  const onDownloadIcon = () => {};
-  const onFullscreen = () => {};
-  const onDelete = () => {};
+  const onDownloadIcon = () => { };
+  const onFullscreen = () => { };
+  const onDelete = () => { };
 
   return (
     <Card className="w-full max-w-md overflow-hidden transition-shadow hover:shadow-lg">
       <CardContent className="relative p-0">
-        <img
-          src={generatedImage.image}
+        <div className="relative h-64 w-full">
+          {generatedImage.state !== "error" && (
+            <img
+              src={
+                generatedImage.state === "pending" ?
+                  placeHolderSvgBase64 :
+                  generatedImage.image
+              }
           alt={generatedImage.usedOptions.prompt}
           className="h-64 w-full object-cover"
-        />
+            />)}
+          {generatedImage.state === "pending" && (
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-full h-full text-foreground text-lg font-bold">
+              <LoaderIcon className="h-14 w-14 animate-spin text-gray-500" />
+            </div>
+          )}
+        </div>
         {!generatedImage.locallySaved && (
           <Badge variant="warning" className="absolute right-2 top-2">
             <AlertTriangleIcon className="mr-1 h-4 w-4" />
