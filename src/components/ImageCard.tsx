@@ -43,8 +43,8 @@ export default function ImageCard({
                   placeHolderSvgBase64 :
                   generatedImage.image
               }
-          alt={generatedImage.usedOptions.prompt}
-          className="h-64 w-full object-cover"
+              alt={generatedImage.usedOptions.prompt}
+              className="h-64 w-full object-cover"
             />)}
           {generatedImage.state === "pending" && (
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-full h-full text-foreground text-lg font-bold">
@@ -52,6 +52,12 @@ export default function ImageCard({
             </div>
           )}
         </div>
+        {generatedImage.state === "error" && (
+          <p className="text-red-500">
+            {generatedImage.error}
+          </p>
+        )}
+
         {!generatedImage.locallySaved && (
           <Badge variant="warning" className="absolute right-2 top-2">
             <AlertTriangleIcon className="mr-1 h-4 w-4" />
