@@ -11,7 +11,15 @@ import { GemIcon } from "lucide-react";
 import { AspectRatioToggle } from "./AspectRatioToggle";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { smallDeviceMediaQuery } from "@/config/app";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export const ImageGenOptions = () => {
   const isSmallDevice = useMediaQuery(smallDeviceMediaQuery);
@@ -86,8 +94,10 @@ export const ImageGenOptions = () => {
           </TogglePrimitive.Root>
         </div>
       </div>
-      <div className="flex justify-between items-center">
-        <label htmlFor="model" className="font-medium text-sm mr-2">Model:</label>
+      <div className="flex items-center justify-between">
+        <label htmlFor="model" className="mr-2 text-sm font-medium">
+          Model:
+        </label>
         <Select defaultValue="dall-e-3" disabled>
           <SelectTrigger>
             <SelectValue id="model" />

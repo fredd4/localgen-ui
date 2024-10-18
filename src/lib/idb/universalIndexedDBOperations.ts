@@ -196,7 +196,7 @@ class IndexedDBManager {
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(new Error("Failed to count items"));
     });
-  };
+  }
 }
 
 export { IndexedDBManager, type DatabaseConfig, type StoreItem };
