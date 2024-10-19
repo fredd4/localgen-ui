@@ -10,7 +10,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useManageSavedImages } from "@/hooks/useManageSavedImages";
 import { removeImage } from "@/lib/idb/imageStore";
-import { downloadBase64Image, getFormattedDate, promptToFilename } from "@/lib/utils";
+import { downloadBase64Image, getFormattedDate, openImageInNewTab, promptToFilename } from "@/lib/utils";
 import { generatedImagesAtom } from "@/store/atoms";
 import { GeneratedImage } from "@/types";
 import { useAtom } from "jotai";
@@ -44,7 +44,11 @@ export default function ImageCard({
       filename
     );
   };
-  const onFullscreen = () => { };
+
+  const onFullscreen = () => {
+    openImageInNewTab(generatedImage.image);
+  };
+  
   const onDelete = () => {
     dispatch({
       type: "DELETE_IMAGE",

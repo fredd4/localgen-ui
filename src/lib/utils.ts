@@ -41,9 +41,10 @@ export function createFieldAtom<T extends object, K extends keyof T>(
  * Generates a formatted date string in the format "YYYY-MMM-DD HH:MM".
  *
  * This function creates a date string suitable for displaying timestamps or logging purposes.
- * It uses the current date and time and formats it with year, abbreviated month, day, hours, and minutes.
+ * It uses the provided date object and formats it with year, abbreviated month, day, hours, and minutes.
  *
- * @returns The formatted date string.
+ * @param {Date} date - The Date object to format.
+ * @returns {string} The formatted date string.
  */
 export function getFormattedDate(date: Date): string {
   const year = date.getFullYear();
@@ -53,6 +54,56 @@ export function getFormattedDate(date: Date): string {
   const minutes = String(date.getMinutes()).padStart(2, "0");
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
+
+/**
+ * Converts a base64-encoded image string into a Blob.
+ *
+ * This function strips out any data URL header from the input, determines the image type,
+ * and converts the remaining base64 string into a binary buffer, which is then used to create a Blob.
+ *
+ * @param {string} base64Data - The base64-encoded string representing the image.
+ * @returns {Blob} A Blob representing the image data.
+ * @throws {Error} If the input base64Data is empty or not in a valid format.
+ */
+export function base64ImageToBlob(base64Data: string): Blob {
+  // Check if the input is empty
+  if (!base64Data) {
+    throw new Error("Input base64Data is empty");
+  }
+
+  // Strip out the data URL part (if present)
+  const [header, base64WithoutHeader] = base64Data.split(",");
+  if (!base64WithoutHeader) {
+    throw new Error("Invalid base64 format");
+  }
+
+  // Determine the image type from the header
+  const imageType = header.match(/data:(.*);base64/)?.[1] || "image/png";
+
+  // Convert the base64 string to a binary buffer
+  const byteCharacters = atob(base64WithoutHeader);
+  const byteNumbers = new Array(byteCharacters.length);
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  const byteArray = new Uint8Array(byteNumbers);
+  return new Blob([byteArray], { type: imageType });
+}
+
+/**
+ * Opens a base64-encoded image in a new browser tab.
+ *
+ * This function converts the base64 image data into a Blob and creates a temporary URL,
+ * which is then used to open the image in a new tab.
+ *
+ * @param {string} base64Data - The base64-encoded string representing the image.
+ */
+export function openImageInNewTab(base64Data: string) {
+  const blob = base64ImageToBlob(base64Data);
+  const imageUrl = URL.createObjectURL(blob);
+  window.open(imageUrl, '_blank');
+}
+
 
 /**
  * Downloads an image represented as a base64-encoded data URL.
@@ -66,34 +117,11 @@ export function getFormattedDate(date: Date): string {
  */
 export function downloadBase64Image(base64Data: string, filename: string) {
   try {
-    // Check if the input is empty
-    if (!base64Data) {
-      throw new Error("Input base64Data is empty");
-    }
-
-    // Strip out the data URL part (if present)
-    const [header, base64WithoutHeader] = base64Data.split(",");
-    if (!base64WithoutHeader) {
-      throw new Error("Invalid base64 format");
-    }
-
-    // Determine the image type from the header
-    const imageType = header.match(/data:(.*);base64/)?.[1] || "image/png";
-
-    // Convert the base64 string to a binary buffer
-    const byteCharacters = atob(base64WithoutHeader);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-
-    // Create a Blob from the byte array
-    const blob = new Blob([byteArray], { type: imageType });
+    const blob = base64ImageToBlob(base64Data);
 
     // Verify the blob using FileReader
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
       if (e.target?.result) {
         // If FileReader succeeds, proceed with download
         const link = document.createElement('a');
@@ -109,7 +137,7 @@ export function downloadBase64Image(base64Data: string, filename: string) {
         throw new Error("FileReader failed to read the blob");
       }
     };
-    reader.onerror = function() {
+    reader.onerror = function () {
       throw new Error("FileReader encountered an error");
     };
     reader.readAsDataURL(blob);
@@ -125,7 +153,7 @@ export function downloadBase64Image(base64Data: string, filename: string) {
  * - Replacing invalid filename characters with underscores
  *
  * @param {string} prompt - The input prompt to be converted to a valid filename.
- * @param {number} [maxLength=255] - Optional maximum length for the filename (default is 255 characters).
+ * @param {number} [maxLength=255] - Optional maximum length for the filename (default is 128 characters).
  * @returns {string} A sanitized, valid filename based on the prompt.
  */
 export function promptToFilename(prompt: string, maxLength: number = 128): string {
