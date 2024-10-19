@@ -8,10 +8,14 @@ export const validateApiKey = async (
   setError: (error: string) => void,
   setLoading: (loading: boolean) => void
 ) => {
-  if (!key.startsWith("sk-")) {
-    setError("Invalid API key format");
+  const handleInvalidApiKey = (message: string) => {
+    setError(message);
     setIsApiKeyValid(false);
     setApiKey("");
+  };
+
+  if (!key.startsWith("sk-")) {
+    handleInvalidApiKey("Invalid API key format");
     return;
   }
   setLoading(true);
@@ -33,19 +37,13 @@ export const validateApiKey = async (
         setIsApiKeyValid(true);
         await setSetting(apiKeySetting, key);
       } else {
-        setError("API key is invalid");
-        setIsApiKeyValid(false);
-        setApiKey("");
+        handleInvalidApiKey("API key is invalid");
       }
     } else {
-      setError("API key is invalid");
-      setIsApiKeyValid(false);
-      setApiKey("");
+      handleInvalidApiKey("API key is invalid");
     }
   } catch {
-    setError("An error occurred during validation");
-    setIsApiKeyValid(false);
-    setApiKey("");
+    handleInvalidApiKey("An error occurred during validation");
   } finally {
     setLoading(false);
   }
