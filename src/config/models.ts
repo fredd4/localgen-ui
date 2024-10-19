@@ -1,5 +1,7 @@
 import { ModelConfig } from "@/types";
 
+export const exactPromptInstruction = "Please use this exact prompt, do not change it: ";
+
 export const modelConfigs: Record<string, ModelConfig> = {
   "dall-e-3": {
     displayName: "DALL-E 3",

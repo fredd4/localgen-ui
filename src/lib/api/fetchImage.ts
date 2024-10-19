@@ -1,5 +1,5 @@
 import { debugImagePngBase64 } from "@/assets/debugImagePng";
-import { modelConfigs } from "@/config/models";
+import { exactPromptInstruction, modelConfigs } from "@/config/models";
 import { GenerationOptions, Model } from "@/types";
 import OpenAI from "openai";
 import { estimateCost } from "../costEstimation";
@@ -41,7 +41,7 @@ export const fetchImage = async (
       // eslint-disable-next-line no-case-declarations
       const result = await openai.images.generate({
         model: model,
-        prompt: options.prompt,
+        prompt: (options.useExactPrompt && exactPromptInstruction) + options.prompt,
         quality: options.hdQuality ? "hd" : "standard",
         size: size,
         n: 1,
