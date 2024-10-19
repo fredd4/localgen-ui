@@ -22,7 +22,6 @@ export const useGenerationOptions = () => {
 
   return {
     price,
-    setPrice,
     showSettings,
     toggleShowSettings,
     generationOptions,
