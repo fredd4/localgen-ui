@@ -1,2 +1,4 @@
-export const models = ["dall-e-3", "dall-e-2"] as const;
-export const companies = ["OpenAI"] as const;
+import { Company, Model } from "@/types";
+
+export const models: Model[] = ["dall-e-3", "dall-e-2"];
+export const companies: Company[] = ["OpenAI"];
