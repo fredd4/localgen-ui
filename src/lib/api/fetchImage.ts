@@ -1,19 +1,27 @@
+import { dalle3RatioToSize } from "@/config/models";
 import { GenerationOptions } from "@/types";
+import OpenAI from "openai";
 import { estimateCost } from "../costEstimation";
-
-function wait(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 export const fetchImage = async (
   options: GenerationOptions,
   apiKey: string
 ) => {
-  console.log("API Key is set: ", apiKey !== "");
-  const url =
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII";
   const cost = estimateCost({ ...options, numImages: 1 });
-  const revisedPrompt = "revised: " + options.prompt;
-  await wait(5000);
-  return { url, revisedPrompt, cost };
+  if (apiKey === "") throw(new Error("You must provide a valid API key"))
+  if (options.model === "dall-e-3") {
+    const openai = new OpenAI({apiKey, dangerouslyAllowBrowser: true});
+    const result = await openai.images.generate({
+      model: "dall-e-3",
+      prompt: options.prompt,
+      quality: options.hdQuality ? "hd" : "standard",
+      size: dalle3RatioToSize(options.aspectRatio),
+      n: 1,
+      response_format: "b64_json"
+    });
+    if (!result.data[0].b64_json || !result.data[0].revised_prompt) throw (new Error("Image generation failed"))
+    return { url: "data:image/png;base64," + result.data[0].b64_json, revisedPrompt: result.data[0].revised_prompt, cost };
+  }
+  
+  throw(new Error("Unsupported model"))
 };
