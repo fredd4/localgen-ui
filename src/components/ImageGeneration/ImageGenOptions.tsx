@@ -1,16 +1,4 @@
 import { Label } from "@/components/ui/label";
-import { InteractiveRangeSlider } from "@/components/ui/slider";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { MAX_IMAGES, MIN_IMAGES } from "@/config/imageGeneration";
-import { cn } from "@/lib/utils";
-import { generationOptionsAtom } from "@/store/atoms";
-import { StyleValue } from "@/types";
-import * as TogglePrimitive from "@radix-ui/react-toggle";
-import { useAtom } from "jotai";
-import { GemIcon } from "lucide-react";
-import { AspectRatioToggle } from "./AspectRatioToggle";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
-import { smallDeviceMediaQuery } from "@/config/app";
 import {
   Select,
   SelectContent,
@@ -20,6 +8,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { InteractiveRangeSlider } from "@/components/ui/slider";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { smallDeviceMediaQuery } from "@/config/app";
+import { MAX_IMAGES, MIN_IMAGES } from "@/config/imageGeneration";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { cn } from "@/lib/utils";
+import { generationOptionsAtom } from "@/store/atoms";
+import { StyleValue } from "@/types";
+import * as TogglePrimitive from "@radix-ui/react-toggle";
+import { useAtom } from "jotai";
+import { GemIcon } from "lucide-react";
+import { AspectRatioToggle } from "./AspectRatioToggle";
 
 export const ImageGenOptions = () => {
   const isSmallDevice = useMediaQuery(smallDeviceMediaQuery);

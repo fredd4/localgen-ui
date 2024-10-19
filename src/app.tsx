@@ -1,6 +1,6 @@
-import History from "@/components/App/History/History";
-import ImageGeneration from "@/components/App/ImageGeneration/ImageGeneration";
-import Header from "@/components/App/Layout/Header";
+import History from "@/components/History/History";
+import ImageGeneration from "@/components/ImageGeneration/ImageGeneration";
+import Header from "@/components/Layout/Header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ClockIcon, ImageIcon } from "lucide-react";
 

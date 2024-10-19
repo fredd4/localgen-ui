@@ -1,5 +1,5 @@
 import { GithubIcon } from "@/assets/GithubIcon";
-import Settings from "@/components/App/Settings/Settings";
+import Settings from "@/components/Settings/Settings";
 import { Button } from "@/components/ui/button";
 import {
   Popover,

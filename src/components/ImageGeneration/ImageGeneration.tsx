@@ -1,4 +1,4 @@
-import { ImageGenOptions } from "@/components/App/ImageGeneration/ImageGenOptions";
+import ImageCard from "@/components/ImageCard";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,7 +9,7 @@ import { useAtomValue } from "jotai";
 import { useEffect } from "preact/hooks";
 import { useState } from "react";
 import ActionRow from "./ActionRow";
-import ImageCard from "@/components/ImageCard";
+import { ImageGenOptions } from "./ImageGenOptions";
 
 const ImageGeneration = () => {
   const generatedImages = useAtomValue(generatedImagesAtom);

@@ -1,3 +1,4 @@
+import ImageSettingsIcon from "@/assets/ImageSettingsIcon";
 import { Button } from "@/components/ui/button";
 import { smallDeviceMediaQuery } from "@/config/app";
 import { MAX_IMAGES, MIN_IMAGES } from "@/config/imageGeneration";
@@ -11,7 +12,6 @@ import {
 } from "@/store/atoms";
 import { useAtom, useAtomValue } from "jotai";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import ImageSettingsIcon from "./ImageSettingsIcon";
 
 const ActionRow = () => {
   const [useExactPrompt, setUseExactPrompt] = useAtom(gaUseExactPromptAtom);
