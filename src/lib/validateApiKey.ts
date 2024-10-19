@@ -21,6 +21,11 @@ export const validateApiKey = async (
   setLoading(true);
   setError("");
   try {
+    if (key === "sk-debug") {
+      setIsApiKeyValid(true);
+      await setSetting(apiKeySetting, key);
+      return;
+    }
     const response = await fetch("https://api.openai.com/v1/models/dall-e-3", {
       method: "GET",
       headers: {

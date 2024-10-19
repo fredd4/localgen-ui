@@ -1,3 +1,4 @@
+import { debugImagePngBase64 } from "@/assets/debugImagePng";
 import { modelConfigs } from "@/config/models";
 import { GenerationOptions, Model } from "@/types";
 import OpenAI from "openai";
@@ -9,7 +10,7 @@ export const fetchImage = async (
 ) => {
   const cost = estimateCost({ ...options, numImages: 1 });
   if (apiKey === "") throw new Error("You must provide a valid API key");
-
+  if (apiKey === "sk-debug") return { url: debugImagePngBase64, cost, revisedPrompt: "revised: " + options.prompt }
   const model = options.model as Model;
   const modelConfig = modelConfigs[model];
 
