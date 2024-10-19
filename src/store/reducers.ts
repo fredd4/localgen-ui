@@ -13,6 +13,8 @@ export function generatedImagesReducer(
       return state.map((image) =>
         image.id === action.id ? { ...image, ...action.data } : image
       );
+    case "DELETE_IMAGE":
+      return state.filter((image) => image.id !== action.id);
     default:
       return state;
   }

@@ -8,8 +8,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useManageSavedImages } from "@/hooks/useManageSavedImages";
+import { removeImage } from "@/lib/idb/imageStore";
 import { downloadBase64Image, getFormattedDate, promptToFilename } from "@/lib/utils";
+import { generatedImagesAtom } from "@/store/atoms";
 import { GeneratedImage } from "@/types";
+import { useAtom } from "jotai";
 import {
   AlertTriangleIcon,
   DownloadIcon,
@@ -27,21 +31,30 @@ interface ImageCardProperties {
 export default function ImageCard({
   generatedImage,
 }: Readonly<ImageCardProperties>) {
+  const [, dispatch] = useAtom(generatedImagesAtom);
   const [showRevisedPrompt, setShowRevisedPrompt] = useState(false);
+  const { loadSavedImages } = useManageSavedImages();
   const onDownloadIcon = () => {
-    const filename = `${
-      generatedImage.usedOptions.model
-    }-${
-      promptToFilename(getFormattedDate(generatedImage.createdAt)+
-      "-"+generatedImage.usedOptions.prompt)
-    }.png`;
+    const filename = `${generatedImage.usedOptions.model
+      }-${promptToFilename(getFormattedDate(generatedImage.createdAt) +
+        "-" + generatedImage.usedOptions.prompt)
+      }.png`;
     downloadBase64Image(
       generatedImage.image,
-      filename  
+      filename
     );
   };
-  const onFullscreen = () => {};
-  const onDelete = () => {};
+  const onFullscreen = () => { };
+  const onDelete = () => {
+    dispatch({
+      type: "DELETE_IMAGE",
+      id: generatedImage.id,
+    });
+    if (generatedImage.locallySaved) {
+      removeImage(generatedImage.id);
+      loadSavedImages();
+    }
+  };
 
   return (
     <Card className="w-full max-w-md overflow-hidden transition-shadow hover:shadow-lg">

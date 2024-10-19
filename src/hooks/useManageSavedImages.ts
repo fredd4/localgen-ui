@@ -21,5 +21,5 @@ export const useManageSavedImages = () => {
     loadSavedImages();
   }, []);
 
-  return { savedImages, savedImagesCount, savedImagesCost };
+  return { savedImages, savedImagesCount, savedImagesCost, loadSavedImages };
 };
