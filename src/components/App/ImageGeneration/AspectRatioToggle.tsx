@@ -1,11 +1,13 @@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { aspectRatios } from "@/config/imageGeneration";
-import type { AspectRatioSetting, AspectRatioValue } from "@/types";
+import type { AspectRatioValue } from "@/types";
 
 interface AspectRatioToggleProps {
   aspectRatio: AspectRatioValue;
   setAspectRatio: (aspectRatio: AspectRatioValue) => void;
 }
+
+type AspectRatioSetting = (typeof aspectRatios)[number];
 
 const AspectRatioToggleItem = ({
   aspectRatioSetting,

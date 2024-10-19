@@ -1,6 +1,5 @@
-import { aspectRatios } from "@/config/imageGeneration";
-export type AspectRatioSetting = (typeof aspectRatios)[number];
-export type AspectRatioValue = AspectRatioSetting["value"];
+import { AspectRatioValue } from "@/types";
+
 export type StyleValue = "natural" | "vivid";
 
 export interface GenerationOptions {
