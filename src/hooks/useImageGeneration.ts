@@ -1,13 +1,14 @@
 import { fetchImage } from "@/lib/api/fetchImage";
 import { addImage as saveImageLocally } from "@/lib/idb/imageStore";
-import { apiKeyAtom, generatedImagesAtom } from "@/store/atoms";
+import { generatedImagesAtom } from "@/store/atoms";
 import { GeneratedImage } from "@/types";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { useEffect } from "react";
+import { useLoadApiKey } from "./useLoadApiKey";
 
 export function useImageGeneration() {
   const [images, dispatch] = useAtom(generatedImagesAtom);
-  const apiKey = useAtomValue(apiKeyAtom);
+  const { apiKey } = useLoadApiKey();
 
   useEffect(() => {
     const pendingImages = images.filter(
