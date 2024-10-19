@@ -53,3 +53,87 @@ export function getFormattedDate(date: Date): string {
   const minutes = String(date.getMinutes()).padStart(2, "0");
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
+
+/**
+ * Downloads an image represented as a base64-encoded data URL.
+ *
+ * This function takes the base64 data of an image, decodes it, and triggers a download
+ * with the specified filename. It creates a temporary link element and uses it to initiate
+ * the download process.
+ *
+ * @param base64Data The base64-encoded data URL of the image.
+ * @param filename The desired filename for the downloaded image.
+ */
+export function downloadBase64Image(base64Data: string, filename: string) {
+  try {
+    // Check if the input is empty
+    if (!base64Data) {
+      throw new Error("Input base64Data is empty");
+    }
+
+    // Strip out the data URL part (if present)
+    const [header, base64WithoutHeader] = base64Data.split(",");
+    if (!base64WithoutHeader) {
+      throw new Error("Invalid base64 format");
+    }
+
+    // Determine the image type from the header
+    const imageType = header.match(/data:(.*);base64/)?.[1] || "image/png";
+
+    // Convert the base64 string to a binary buffer
+    const byteCharacters = atob(base64WithoutHeader);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+
+    // Create a Blob from the byte array
+    const blob = new Blob([byteArray], { type: imageType });
+
+    // Verify the blob using FileReader
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      if (e.target?.result) {
+        // If FileReader succeeds, proceed with download
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        console.log("Image download initiated successfully");
+      } else {
+        throw new Error("FileReader failed to read the blob");
+      }
+    };
+    reader.onerror = function() {
+      throw new Error("FileReader encountered an error");
+    };
+    reader.readAsDataURL(blob);
+  } catch (error) {
+    console.error("Error in downloadBase64Image:", error);
+    throw error;
+  }
+}
+
+/**
+ * Converts a prompt into a valid filename by:
+ * - Trimming it to a maximum length
+ * - Replacing invalid filename characters with underscores
+ *
+ * @param {string} prompt - The input prompt to be converted to a valid filename.
+ * @param {number} [maxLength=255] - Optional maximum length for the filename (default is 255 characters).
+ * @returns {string} A sanitized, valid filename based on the prompt.
+ */
+export function promptToFilename(prompt: string, maxLength: number = 128): string {
+  // Replace all invalid filename characters with underscores
+  const sanitized = prompt.replace(/[^a-zA-Z0-9-_]/g, '-');
+
+  // Ensure the filename does not exceed the maximum length
+  const trimmed = sanitized.substring(0, maxLength);
+
+  return trimmed;
+}

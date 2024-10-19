@@ -8,7 +8,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { getFormattedDate } from "@/lib/utils";
+import { downloadBase64Image, getFormattedDate, promptToFilename } from "@/lib/utils";
 import { GeneratedImage } from "@/types";
 import {
   AlertTriangleIcon,
@@ -28,7 +28,18 @@ export default function ImageCard({
   generatedImage,
 }: Readonly<ImageCardProperties>) {
   const [showRevisedPrompt, setShowRevisedPrompt] = useState(false);
-  const onDownloadIcon = () => {};
+  const onDownloadIcon = () => {
+    const filename = `${
+      generatedImage.usedOptions.model
+    }-${
+      promptToFilename(getFormattedDate(generatedImage.createdAt)+
+      "-"+generatedImage.usedOptions.prompt)
+    }.png`;
+    downloadBase64Image(
+      generatedImage.image,
+      filename  
+    );
+  };
   const onFullscreen = () => {};
   const onDelete = () => {};
 
