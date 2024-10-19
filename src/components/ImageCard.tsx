@@ -8,12 +8,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useManageImageGeneration } from "@/hooks/useManageImageGeneration";
 import { useManageSavedImages } from "@/hooks/useManageSavedImages";
 import { removeImage } from "@/lib/idb/imageStore";
 import { downloadBase64Image, getFormattedDate, openImageInNewTab, promptToFilename } from "@/lib/utils";
-import { generatedImagesAtom } from "@/store/atoms";
 import { GeneratedImage } from "@/types";
-import { useAtom } from "jotai";
 import {
   AlertTriangleIcon,
   DownloadIcon,
@@ -31,7 +30,7 @@ interface ImageCardProperties {
 export default function ImageCard({
   generatedImage,
 }: Readonly<ImageCardProperties>) {
-  const [, dispatch] = useAtom(generatedImagesAtom);
+  const { removeImageGeneration } = useManageImageGeneration();
   const [showRevisedPrompt, setShowRevisedPrompt] = useState(false);
   const { loadSavedImages } = useManageSavedImages();
   const onDownloadIcon = () => {
@@ -48,12 +47,9 @@ export default function ImageCard({
   const onFullscreen = () => {
     openImageInNewTab(generatedImage.image);
   };
-  
+
   const onDelete = () => {
-    dispatch({
-      type: "DELETE_IMAGE",
-      id: generatedImage.id,
-    });
+    removeImageGeneration(generatedImage.id);
     if (generatedImage.locallySaved) {
       removeImage(generatedImage.id);
       loadSavedImages();

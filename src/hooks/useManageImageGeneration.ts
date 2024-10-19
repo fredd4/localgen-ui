@@ -1,10 +1,10 @@
-import { useAtom } from "jotai";
 import { generatedImagesAtom } from "@/store/atoms";
-import { GenerationOptions, GeneratedImage } from "@/types";
+import { GeneratedImage, GenerationOptions } from "@/types";
+import { useAtom } from "jotai";
 import { v4 as uuidv4 } from "uuid";
 import { useImageGeneration } from "./useImageGeneration";
 
-export function useAddImageGeneration() {
+export function useManageImageGeneration() {
   useImageGeneration();
   const [, dispatch] = useAtom(generatedImagesAtom);
 
@@ -33,5 +33,12 @@ export function useAddImageGeneration() {
     });
   };
 
-  return addNewImageGeneration;
+  const removeImageGeneration = (id: string) => {
+    dispatch({
+      type: "DELETE_IMAGE",
+      id,
+    });
+  };
+
+  return { addNewImageGeneration, removeImageGeneration };
 }

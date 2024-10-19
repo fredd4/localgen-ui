@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
+import { smallDeviceMediaQuery } from "@/config/app";
 import { MAX_IMAGES, MIN_IMAGES } from "@/config/imageGeneration";
-import { useAddImageGeneration } from "@/hooks/useAddImageGeneration";
+import { useManageImageGeneration } from "@/hooks/useManageImageGeneration";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import {
   gaUseExactPromptAtom,
@@ -11,7 +12,6 @@ import {
 import { useAtom, useAtomValue } from "jotai";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import ImageSettingsIcon from "./ImageSettingsIcon";
-import { smallDeviceMediaQuery } from "@/config/app";
 
 const ActionRow = () => {
   const [useExactPrompt, setUseExactPrompt] = useAtom(gaUseExactPromptAtom);
@@ -22,7 +22,7 @@ const ActionRow = () => {
   const toggleGenerationOption = () =>
     setShowGenerationOption(!showGenerationOption);
   const generationOptions = useAtomValue(generationOptionsAtom);
-  const addNewImageGeneration = useAddImageGeneration();
+  const { addNewImageGeneration } = useManageImageGeneration();
   const handleGenerate = () => {
     addNewImageGeneration(generationOptions);
   };
@@ -48,11 +48,10 @@ const ActionRow = () => {
       <Button
         variant={useExactPrompt ? "default" : "outline"}
         onClick={() => setUseExactPrompt(!useExactPrompt)}
-        className={`flex h-full w-24 flex-col items-center justify-center p-1 px-2 ${
-          useExactPrompt
-            ? "bg-primary text-primary-foreground"
-            : "bg-background text-foreground"
-        }`}
+        className={`flex h-full w-24 flex-col items-center justify-center p-1 px-2 ${useExactPrompt
+          ? "bg-primary text-primary-foreground"
+          : "bg-background text-foreground"
+          }`}
         style={{ flexShrink: 0 }}
       >
         <span
