@@ -27,7 +27,10 @@ export const generatedImagesAtom = atomWithReducer<
   GeneratedImageAction
 >([], generatedImagesReducer);
 
-export const savedImagesAtom = atom<GeneratedImage[]>([]);
+export const savedImagesAtom = atomWithReducer<
+  GeneratedImage[],
+  GeneratedImageAction
+>([], generatedImagesReducer);
 export const savedImagesCountAtom = atom((get) => get(savedImagesAtom).length);
 export const savedImagesCostAtom = atom((get) =>
   get(savedImagesAtom).reduce((acc, image) => acc + image.cost, 0)

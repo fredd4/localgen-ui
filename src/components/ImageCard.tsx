@@ -10,7 +10,6 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useManageImageGeneration } from "@/hooks/useManageImageGeneration";
 import { useManageSavedImages } from "@/hooks/useManageSavedImages";
-import { removeImage } from "@/lib/idb/imageStore";
 import { downloadBase64Image, getFormattedDate, openImageInNewTab, promptToFilename } from "@/lib/utils";
 import { GeneratedImage } from "@/types";
 import {
@@ -30,9 +29,9 @@ interface ImageCardProperties {
 export default function ImageCard({
   generatedImage,
 }: Readonly<ImageCardProperties>) {
-  const { removeImageGeneration } = useManageImageGeneration();
   const [showRevisedPrompt, setShowRevisedPrompt] = useState(false);
-  const { loadSavedImages } = useManageSavedImages();
+  const { removeImageGeneration } = useManageImageGeneration();
+  const { deleteSavedImage } = useManageSavedImages();
   const onDownloadIcon = () => {
     const filename = `${generatedImage.usedOptions.model
       }-${promptToFilename(getFormattedDate(generatedImage.createdAt) +
@@ -51,8 +50,7 @@ export default function ImageCard({
   const onDelete = () => {
     removeImageGeneration(generatedImage.id);
     if (generatedImage.locallySaved) {
-      removeImage(generatedImage.id);
-      loadSavedImages();
+      deleteSavedImage(generatedImage.id)
     }
   };
 

@@ -1,4 +1,4 @@
-import { getAllImages } from "@/lib/idb/imageStore";
+import { getAllImages, removeImage } from "@/lib/idb/imageStore";
 import {
   savedImagesAtom,
   savedImagesCostAtom,
@@ -8,18 +8,26 @@ import { useAtom, useAtomValue } from "jotai";
 import { useEffect } from "react";
 
 export const useManageSavedImages = () => {
-  const [savedImages, setSavedImages] = useAtom(savedImagesAtom);
+  const [savedImages, dispatch] = useAtom(savedImagesAtom);
   const savedImagesCount = useAtomValue(savedImagesCountAtom);
   const savedImagesCost = useAtomValue(savedImagesCostAtom);
 
+  const deleteSavedImage = (id: string) => {
+    dispatch({
+      type: "DELETE_IMAGE",
+      id,
+    });
+    removeImage(id);
+  };
+
   const loadSavedImages = async () => {
     const loadedImages = await getAllImages();
-    setSavedImages(loadedImages);
+    dispatch({ type: "SET_IMAGES", images: loadedImages });
   };
 
   useEffect(() => {
     loadSavedImages();
   }, []);
 
-  return { savedImages, savedImagesCount, savedImagesCost, loadSavedImages };
+  return { savedImages, savedImagesCount, savedImagesCost, loadSavedImages, deleteSavedImage };
 };
