@@ -21,7 +21,7 @@ const Settings = () => {
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <label htmlFor="api-key" className="text-sm font-medium">
-            API Key
+            OpenAI API Key
           </label>
           <ApiKeyInput />
         </div>
