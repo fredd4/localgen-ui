@@ -7,6 +7,8 @@ export function generatedImagesReducer(
   action: GeneratedImageAction
 ): GeneratedImage[] {
   switch (action.type) {
+    case "SET_IMAGES":
+      return action.images;
     case "ADD_IMAGES":
       return [...state, ...action.images];
     case "UPDATE_IMAGE":
