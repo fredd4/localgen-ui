@@ -1,5 +1,5 @@
-import { dalle3RatioToSize } from "@/config/models";
-import { GenerationOptions } from "@/types";
+import { modelConfigs } from "@/config/models";
+import { GenerationOptions, Model } from "@/types";
 import OpenAI from "openai";
 import { estimateCost } from "../costEstimation";
 
@@ -8,20 +8,54 @@ export const fetchImage = async (
   apiKey: string
 ) => {
   const cost = estimateCost({ ...options, numImages: 1 });
-  if (apiKey === "") throw(new Error("You must provide a valid API key"))
-  if (options.model === "dall-e-3") {
-    const openai = new OpenAI({apiKey, dangerouslyAllowBrowser: true});
-    const result = await openai.images.generate({
-      model: "dall-e-3",
-      prompt: options.prompt,
-      quality: options.hdQuality ? "hd" : "standard",
-      size: dalle3RatioToSize(options.aspectRatio),
-      n: 1,
-      response_format: "b64_json"
-    });
-    if (!result.data[0].b64_json || !result.data[0].revised_prompt) throw (new Error("Image generation failed"))
-    return { url: "data:image/png;base64," + result.data[0].b64_json, revisedPrompt: result.data[0].revised_prompt, cost };
+  if (apiKey === "") throw new Error("You must provide a valid API key");
+
+  const model = options.model as Model;
+  const modelConfig = modelConfigs[model];
+
+  if (!modelConfig) {
+    throw new Error(`Unsupported model: ${options.model}`);
   }
-  
-  throw(new Error("Unsupported model"))
+
+  const { company, capabilities } = modelConfig;
+
+  if (!capabilities.supportedAspectRatios.includes(options.aspectRatio)) {
+    throw new Error(
+      `Aspect ratio ${options.aspectRatio} is not supported by model ${options.model}`
+    );
+  }
+
+  const size = capabilities.aspectRatioToSize[options.aspectRatio];
+  if (!size) {
+    throw new Error(
+      `Size for aspect ratio ${options.aspectRatio} is not defined for model ${options.model}`
+    );
+  }
+
+  switch (company) {
+    case "OpenAI":
+      const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
+
+      const result = await openai.images.generate({
+        model: model,
+        prompt: options.prompt,
+        quality: options.hdQuality ? "hd" : "standard",
+        size: size,
+        n: 1,
+        response_format: "b64_json",
+      });
+
+      if (!result.data[0].b64_json || !result.data[0].revised_prompt) {
+        throw new Error("Image generation failed");
+      }
+
+      return {
+        url: "data:image/png;base64," + result.data[0].b64_json,
+        revisedPrompt: result.data[0].revised_prompt,
+        cost,
+      };
+
+    default:
+      throw new Error(`Unsupported company: ${company}`);
+  }
 };
