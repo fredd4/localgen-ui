@@ -71,12 +71,15 @@ const ImageGeneration = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="grid gap-4 mt-4">
+        <div className="mt-4 grid gap-4">
           {generatedImages.length > 0 && (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {generatedImages.slice().reverse().map((image, index) => (
-                <ImageCard key={index} generatedImage={image} />
-              ))}
+              {generatedImages
+                .slice()
+                .reverse()
+                .map((image, index) => (
+                  <ImageCard key={index} generatedImage={image} />
+                ))}
             </div>
           )}
         </div>

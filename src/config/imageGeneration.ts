@@ -24,25 +24,25 @@ export const aspectRatios: {
   description: string;
   Icon: typeof SquareIcon;
 }[] = [
-    {
-      value: "square",
-      label: "Square",
-      description: "1024x1024",
-      Icon: SquareIcon,
-    },
-    {
-      value: "horizontal",
-      label: "Horizontal",
-      description: "1792×1024",
-      Icon: RectangleHorizontalIcon,
-    },
-    {
-      value: "vertical",
-      label: "Vertical",
-      description: "1024×1792",
-      Icon: RectangleVerticalIcon,
-    },
-  ];
+  {
+    value: "square",
+    label: "Square",
+    description: "1024x1024",
+    Icon: SquareIcon,
+  },
+  {
+    value: "horizontal",
+    label: "Horizontal",
+    description: "1792×1024",
+    Icon: RectangleHorizontalIcon,
+  },
+  {
+    value: "vertical",
+    label: "Vertical",
+    description: "1024×1792",
+    Icon: RectangleVerticalIcon,
+  },
+];
 
 export const generationCost = {
   hd: {

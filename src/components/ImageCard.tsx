@@ -16,7 +16,7 @@ import {
   ExpandIcon,
   InfoIcon,
   LoaderIcon,
-  Trash2Icon
+  Trash2Icon,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -28,9 +28,9 @@ export default function ImageCard({
   generatedImage,
 }: Readonly<ImageCardProperties>) {
   const [showRevisedPrompt, setShowRevisedPrompt] = useState(false);
-  const onDownloadIcon = () => { };
-  const onFullscreen = () => { };
-  const onDelete = () => { };
+  const onDownloadIcon = () => {};
+  const onFullscreen = () => {};
+  const onDelete = () => {};
 
   return (
     <Card className="w-full max-w-md overflow-hidden transition-shadow hover:shadow-lg">
@@ -39,23 +39,22 @@ export default function ImageCard({
           {generatedImage.state !== "error" && (
             <img
               src={
-                generatedImage.state === "pending" ?
-                  placeHolderSvgBase64 :
-                  generatedImage.image
+                generatedImage.state === "pending"
+                  ? placeHolderSvgBase64
+                  : generatedImage.image
               }
               alt={generatedImage.usedOptions.prompt}
               className="h-64 w-full object-cover"
-            />)}
+            />
+          )}
           {generatedImage.state === "pending" && (
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-full h-full text-foreground text-lg font-bold">
+            <div className="absolute left-1/2 top-1/2 flex h-full w-full -translate-x-1/2 -translate-y-1/2 items-center justify-center text-lg font-bold text-foreground">
               <LoaderIcon className="h-14 w-14 animate-spin text-gray-500" />
             </div>
           )}
         </div>
         {generatedImage.state === "error" && (
-          <p className="text-red-500">
-            {generatedImage.error}
-          </p>
+          <p className="text-red-500">{generatedImage.error}</p>
         )}
 
         {!generatedImage.locallySaved && (

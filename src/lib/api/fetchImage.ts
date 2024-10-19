@@ -34,8 +34,10 @@ export const fetchImage = async (
 
   switch (company) {
     case "OpenAI":
+      // eslint-disable-next-line no-case-declarations
       const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
 
+      // eslint-disable-next-line no-case-declarations
       const result = await openai.images.generate({
         model: model,
         prompt: options.prompt,

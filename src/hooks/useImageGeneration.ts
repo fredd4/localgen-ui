@@ -48,13 +48,13 @@ export function useImageGeneration() {
               locallySaved: true,
             },
           });
-        } catch (error: any) {
+        } catch (error) {
           dispatch({
             type: "UPDATE_IMAGE",
             id: image.id,
             data: {
               state: "error",
-              error: error.message,
+              error: (error as Error).message,
             },
           });
         } finally {
