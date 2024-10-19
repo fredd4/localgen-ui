@@ -1,3 +1,4 @@
+import { GithubIcon } from "@/assets/GithubIcon";
 import Settings from "@/components/App/Settings/Settings";
 import { Button } from "@/components/ui/button";
 import {
@@ -45,6 +46,12 @@ const Header = () => {
           <span className="text-xl font-bold sm:text-5xl">DALL-E Web App</span>
         </motion.h1>
         <div className="flex items-end justify-center space-x-2 sm:space-x-4">
+          <a href="https://github.com/aliciusschroeder/localgen-ui" target="_blank">
+            <Button size="icon" variant="outline" className={buttonStyle}>
+              <GithubIcon size={32} />
+              <span className={buttonLabelStyle}>About</span>
+            </Button>
+          </a>
           <SettingsButton />
         </div>
       </div>
