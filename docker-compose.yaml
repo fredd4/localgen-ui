@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: localgen-ui
     ports:
       - "${HOST_PORT:-8080}:80"  # Maps port 80 in the container to port 8080 on the host
     # Optional: You can add environment variables or volume mappings if needed
