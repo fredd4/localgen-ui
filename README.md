@@ -52,6 +52,39 @@ npm run build
 
 After building, you'll find a single HTML file in the `dist` directory.
 
+## 🐳 Using Docker
+
+You can also run LocalGen-UI using Docker, which allows for easy deployment and eliminates the need for local installations. Follow these steps:
+
+1. Ensure you have Docker and Docker Compose installed on your machine.
+
+2. Clone the repository and navigate into the project directory:
+
+   ```bash
+   git clone https://github.com/aliciusschroeder/localgen-ui.git
+   cd localgen-ui
+   ```
+
+3. Build and start the services using Docker Compose:
+
+   ```bash
+   docker compose up --build
+   ```
+
+   If you want to run it in detached mode (background), use:
+
+   ```bash
+   docker compose up --build -d
+   ```
+
+4. Access LocalGen-UI in your browser at `http://localhost:8080`.
+
+To stop the services, simply run:
+
+```bash
+docker compose down
+```
+
 ## 🎮 Usage
 
 1. Open LocalGen-UI in your browser.
