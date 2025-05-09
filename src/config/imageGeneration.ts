@@ -18,6 +18,7 @@ export const defaultGenerationOptions: GenerationOptions = {
   transparency: false,
   moderation: "low",
   numImages: MIN_IMAGES,
+  imageInput: undefined,
 } as const;
 
 export const aspectRatios: {

@@ -21,6 +21,7 @@ A user-friendly, browser-based interface for generating images using OpenAI's GP
 ## ✨ Features
 
 - 🖼️ Generate images using GPT-image-1 AI directly in your browser
+- 🖌️ Upload reference images to use as input for your generations
 - 🚀 Standalone application - runs entirely in your browser, no server needed
 - 💾 Local storage of generated images using IndexedDB for offline access
 - 🔒 Secure handling of API keys - stored locally, never sent to any server except OpenAI

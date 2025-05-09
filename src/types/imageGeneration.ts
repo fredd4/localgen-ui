@@ -12,6 +12,7 @@ export interface GenerationOptions {
   transparency: boolean;
   moderation: ModerationValue;
   numImages: number;
+  imageInput?: string;
 }
 
 type GeneratedImageState = "pending" | "generated" | "saved" | "error";
