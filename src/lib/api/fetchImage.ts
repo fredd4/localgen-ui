@@ -1,5 +1,5 @@
 import { debugImagePngBase64 } from "@/assets/debugImagePng";
-import { exactPromptInstruction, modelConfigs } from "@/config/models";
+import { modelConfigs } from "@/config/models";
 import { GenerationOptions, Model } from "@/types";
 import OpenAI from "openai";
 import { estimateCost } from "../costEstimation";
@@ -40,80 +40,157 @@ export const fetchImage = async (
 
       // For image input, we need to use a different approach
       if (options.imageInput) {
-        // Construct a message with both the image and prompt
-        try {
-          // We don't use images.generate when an image is provided
-          // Instead, we need to send to OpenAI API's Vision endpoint directly
-          const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${apiKey}`
-            },
-            body: JSON.stringify({
-              model: "gpt-4o",
-              messages: [
-                { 
-                  role: "system", 
-                  content: "You are an AI image enhancement system. Generate an improved version of the provided image based on the user's instructions." 
-                },
-                {
-                  role: "user",
-                  content: [
-                    { type: "text", text: options.prompt },
-                    { 
-                      type: "image_url", 
-                      image_url: { 
-                        url: options.imageInput
+        // Determine if we're in agent mode and already have an enhanced prompt
+        // or if we need to process the image as a vision task
+        if (options.agentMode) {
+          // In agent mode with enhanced prompt, use the input image as a reference
+          // but don't process it through vision API again
+          try {
+            // We'll use the image input as a reference but with the enhanced prompt
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+              },
+              body: JSON.stringify({
+                model: "gpt-4o",
+                messages: [
+                  { 
+                    role: "system", 
+                    content: "You are an AI image generation system. Generate an image based on the user's instructions, using the provided reference image for style, composition, or content inspiration." 
+                  },
+                  {
+                    role: "user",
+                    content: [
+                      { type: "text", text: options.prompt },
+                      { 
+                        type: "image_url", 
+                        image_url: { 
+                          url: options.imageInput
+                        }
                       }
-                    }
-                  ]
-                }
-              ],
-              max_tokens: 300
-            })
-          });
+                    ]
+                  }
+                ],
+                max_tokens: 300
+              })
+            });
 
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(`Vision API error: ${errorData.error?.message || response.statusText}`);
+            if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(`Vision API error: ${errorData.error?.message || response.statusText}`);
+            }
+
+            // Get the refined prompt from GPT-4o
+            const visionData = await response.json();
+            const enhancedPrompt = visionData.choices[0].message.content;
+
+            // Now use the enhanced prompt for image generation
+            const imageResult = await openai.images.generate({
+              model: model,
+              prompt: enhancedPrompt,
+              quality: options.quality as "standard" | "hd",
+              size: size,
+              moderation: options.moderation === "low" ? "low" : "auto",
+              n: 1,
+            });
+
+            if (!imageResult.data || !imageResult.data[0]) {
+              throw new Error("Image generation failed");
+            }
+            
+            const imageData = imageResult.data[0];
+            const base64Data = imageData.b64_json;
+            
+            if (!base64Data) {
+              throw new Error("No image data in the response");
+            }
+
+            return {
+              url: "data:image/png;base64," + base64Data,
+              revisedPrompt: enhancedPrompt,
+              cost,
+            };
+          } catch (error) {
+            console.error("Error in vision-based generation:", error);
+            throw new Error(`Failed to process the image input: ${(error as Error).message}`);
           }
+        } else {
+          // Standard vision-based generation (not agent mode)
+          try {
+            // Use the vision API for direct image modification
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+              },
+              body: JSON.stringify({
+                model: "gpt-4o",
+                messages: [
+                  { 
+                    role: "system", 
+                    content: "You are an AI image enhancement system. Generate an improved version of the provided image based on the user's instructions." 
+                  },
+                  {
+                    role: "user",
+                    content: [
+                      { type: "text", text: options.prompt },
+                      { 
+                        type: "image_url", 
+                        image_url: { 
+                          url: options.imageInput
+                        }
+                      }
+                    ]
+                  }
+                ],
+                max_tokens: 300
+              })
+            });
 
-          // At this point, we'd have a text response from the vision model
-          // But we want an image output, so we need to take that response and feed it
-          // into another image generation call
-          const visionData = await response.json();
-          const enhancedPrompt = visionData.choices[0].message.content;
+            if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(`Vision API error: ${errorData.error?.message || response.statusText}`);
+            }
 
-          // Now use the enhanced prompt for image generation
-          const imageResult = await openai.images.generate({
-            model: model,
-            prompt: enhancedPrompt,
-            quality: options.quality as "standard" | "hd",
-            size: size,
-            moderation: options.moderation === "low" ? "low" : "auto",
-            n: 1,
-          });
+            // At this point, we'd have a text response from the vision model
+            // But we want an image output, so we need to take that response and feed it
+            // into another image generation call
+            const visionData = await response.json();
+            const enhancedPrompt = visionData.choices[0].message.content;
 
-          if (!imageResult.data || !imageResult.data[0]) {
-            throw new Error("Image generation failed");
+            // Now use the enhanced prompt for image generation
+            const imageResult = await openai.images.generate({
+              model: model,
+              prompt: enhancedPrompt,
+              quality: options.quality as "standard" | "hd",
+              size: size,
+              moderation: options.moderation === "low" ? "low" : "auto",
+              n: 1,
+            });
+
+            if (!imageResult.data || !imageResult.data[0]) {
+              throw new Error("Image generation failed");
+            }
+            
+            const imageData = imageResult.data[0];
+            const base64Data = imageData.b64_json;
+            
+            if (!base64Data) {
+              throw new Error("No image data in the response");
+            }
+
+            return {
+              url: "data:image/png;base64," + base64Data,
+              revisedPrompt: enhancedPrompt,
+              cost,
+            };
+          } catch (error) {
+            console.error("Error in vision-based generation:", error);
+            throw new Error(`Failed to process the image input: ${(error as Error).message}`);
           }
-          
-          const imageData = imageResult.data[0];
-          const base64Data = imageData.b64_json;
-          
-          if (!base64Data) {
-            throw new Error("No image data in the response");
-          }
-
-          return {
-            url: "data:image/png;base64," + base64Data,
-            revisedPrompt: "",
-            cost,
-          };
-        } catch (error) {
-          console.error("Error in vision-based generation:", error);
-          throw new Error(`Failed to process the image input: ${(error as Error).message}`);
         }
       } else {
         // Standard text-to-image generation flow (no image input)
@@ -123,7 +200,7 @@ export const fetchImage = async (
           size: size,
           moderation: options.moderation === "low" ? "low" : "auto",
           n: 1,
-          prompt: (options.useExactPrompt && exactPromptInstruction) + options.prompt,
+          prompt: options.prompt,
         };
 
         const result = await openai.images.generate(requestParams);

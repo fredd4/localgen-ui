@@ -1,6 +1,4 @@
-import { ModelConfig } from "@/types";
-
-export const exactPromptInstruction = "Please use this exact prompt, do not change it: ";
+import { ModelConfig } from "@/types/models";
 
 export const modelConfigs: Record<string, ModelConfig> = {
   "gpt-image-1": {

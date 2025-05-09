@@ -5,40 +5,54 @@ import { MAX_IMAGES, MIN_IMAGES } from "@/config/imageGeneration";
 import { useManageImageGeneration } from "@/hooks/useManageImageGeneration";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import {
-  gaUseExactPromptAtom,
   generationOptionsAtom,
+  isGeneratingAtom,
   priceAtom,
+  promptEnhancingAtom,
   showGenerationOptionsAtom,
 } from "@/store/atoms";
 import { useAtom, useAtomValue } from "jotai";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import { useState } from "react";
 
 const ActionRow = () => {
-  const [useExactPrompt, setUseExactPrompt] = useAtom(gaUseExactPromptAtom);
   const price = useAtomValue(priceAtom);
   const [showGenerationOption, setShowGenerationOption] = useAtom(
     showGenerationOptionsAtom
   );
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isEnhancing] = useAtom(promptEnhancingAtom);
+  const [isGenerating] = useAtom(isGeneratingAtom);
   const toggleGenerationOption = () =>
     setShowGenerationOption(!showGenerationOption);
   const generationOptions = useAtomValue(generationOptionsAtom);
   const { addNewImageGeneration } = useManageImageGeneration();
   
-  const handleGenerate = () => {
-    // Add new image generation
-    addNewImageGeneration(generationOptions);
+  // Determine if the button should be disabled or show loading state
+  const isLoading = isEnhancing || isGenerating || isProcessing;
+  
+  const handleGenerate = async () => {
+    // Prevent duplicate requests
+    if (isLoading) return;
     
-    // Scroll to the images section after a short delay to allow for rendering
-    setTimeout(() => {
-      const imagesSection = document.getElementById('generated-images-section');
-      if (imagesSection) {
-        imagesSection.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'start'
-        });
-      }
-    }, 100);
+    setIsProcessing(true);
+    try {
+      // Add new image generation
+      await addNewImageGeneration(generationOptions);
+      
+      // Scroll to the images section after a short delay to allow for rendering
+      setTimeout(() => {
+        const imagesSection = document.getElementById('generated-images-section');
+        if (imagesSection) {
+          imagesSection.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start'
+          });
+        }
+      }, 100);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -46,34 +60,21 @@ const ActionRow = () => {
       <QuantitySelector />
 
       <Button
-        /* disabled={isGenerating} */
+        disabled={isLoading}
         className="flex h-full flex-grow items-center bg-primary text-primary-foreground hover:bg-primary/90 sm:justify-between"
         onClick={handleGenerate}
       >
         <p className="hidden font-mono text-sm text-primary opacity-80 sm:block">
           ${price.toFixed(2)}
         </p>
-        <p className="text-lg font-bold">Generate</p>
+        <div className="flex items-center space-x-2">
+          {isLoading && <Loader2 className="mr-1 h-4 w-4 animate-spin" />}
+          <p className="text-lg font-bold">Generate</p>
+          {isEnhancing && <p className="text-xs font-normal italic">Enhancing prompt...</p>}
+        </div>
         <p className="hidden font-mono text-sm opacity-80 sm:block">
           ${price.toFixed(2)}
         </p>
-      </Button>
-
-      <Button
-        variant={useExactPrompt ? "default" : "outline"}
-        onClick={() => setUseExactPrompt(!useExactPrompt)}
-        className={`flex h-full w-24 flex-col items-center justify-center p-1 px-2 ${useExactPrompt
-          ? "bg-primary text-primary-foreground"
-          : "bg-background text-foreground"
-          }`}
-        style={{ flexShrink: 0 }}
-      >
-        <span
-          className={`sm:text-base ${useExactPrompt ? "font-bold" : "font-semibold"}`}
-        >
-          {useExactPrompt ? "ON" : "OFF"}
-        </span>
-        <span className="text-xs sm:mt-1">Exact Prompt</span>
       </Button>
 
       <Button

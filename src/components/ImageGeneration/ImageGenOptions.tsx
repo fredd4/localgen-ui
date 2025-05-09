@@ -14,10 +14,9 @@ import { smallDeviceMediaQuery } from "@/config/app";
 import { MAX_IMAGES, MIN_IMAGES } from "@/config/imageGeneration";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { generationOptionsAtom } from "@/store/atoms";
-import { QualityValue } from "@/types";
+import { AspectRatioValue, PromptEnhancementModelValue, QualityValue } from "@/types";
 import { useAtom } from "jotai";
-import { SparklesIcon } from "lucide-react";
-import { LayersIcon } from "lucide-react";
+import { BotIcon, LayersIcon, SparklesIcon, ZapIcon } from "lucide-react";
 import { AspectRatioToggle } from "./AspectRatioToggle";
 
 export const ImageGenOptions = () => {
@@ -42,6 +41,22 @@ export const ImageGenOptions = () => {
     });
   };
 
+  const onAgentModeChange = (checked: boolean) => {
+    setGenerationOptions({
+      ...generationOptions,
+      agentMode: checked,
+    });
+  };
+
+  const onPromptEnhancementModelChange = (value: string) => {
+    if (value === "gpt-4o" || value === "gpt-4o-mini") {
+      setGenerationOptions({
+        ...generationOptions,
+        promptEnhancementModel: value as PromptEnhancementModelValue,
+      });
+    }
+  };
+
   const onNumImagesChange = (value: number) => {
     setGenerationOptions({
       ...generationOptions,
@@ -54,13 +69,19 @@ export const ImageGenOptions = () => {
       <div className="space-y-2">
         <AspectRatioToggle
           aspectRatio={generationOptions.aspectRatio}
-          setAspectRatio={(newAspectRatio) =>
+          setAspectRatio={(newAspectRatio: AspectRatioValue) =>
             setGenerationOptions({
               ...generationOptions,
               aspectRatio: newAspectRatio,
             })
           }
+          disabled={generationOptions.agentMode}
         />
+        {generationOptions.agentMode && (
+          <div className="text-xs text-muted-foreground">
+            Aspect ratio will be selected by the AI based on your prompt
+          </div>
+        )}
       </div>
       <div className="mt-4 space-y-2">
         <div className="flex items-center">
@@ -94,6 +115,7 @@ export const ImageGenOptions = () => {
             value={generationOptions.transparency ? "on" : "off"}
             onValueChange={(value: string) => onTransparencyChange(value === "on")}
             className="justify-start"
+            disabled={generationOptions.agentMode}
           >
             <ToggleGroupItem value="off" aria-label="Off">
               Off
@@ -104,12 +126,63 @@ export const ImageGenOptions = () => {
           </ToggleGroup>
         </div>
         <div className="text-xs text-muted-foreground">
-          {generationOptions.transparency 
-            ? "Generate images with transparent background (experimental)"
-            : "Generate images with standard background"}
-          <div className="mt-1 text-xs text-amber-500">
-            Note: Transparency is a feature that may work with specific prompting techniques
+          {generationOptions.agentMode 
+            ? "Transparency will be decided by the AI based on your prompt"
+            : generationOptions.transparency 
+              ? "Generate images with transparent background (experimental)"
+              : "Generate images with standard background"}
+          {!generationOptions.agentMode && generationOptions.transparency && (
+            <div className="mt-1 text-xs text-amber-500">
+              Note: Transparency is a feature that may work with specific prompting techniques
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="mt-4 space-y-2">
+        <div className="flex items-center">
+          <ZapIcon className="mr-2 h-4 w-4 text-primary" />
+          <span className="text-sm font-medium">Prompt Enhancement Model</span>
+        </div>
+        <Select 
+          value={generationOptions.promptEnhancementModel} 
+          onValueChange={onPromptEnhancementModelChange}
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select Model" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="gpt-4o-mini">GPT-4o Mini (Faster, Less Detailed)</SelectItem>
+            <SelectItem value="gpt-4o">GPT-4o (Slower, More Detailed)</SelectItem>
+          </SelectContent>
+        </Select>
+        <div className="text-xs text-muted-foreground">
+          Model used when Agent Mode is enabled to enhance your prompts
+        </div>
+      </div>
+      <div className="mt-4 space-y-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <BotIcon className="mr-2 h-4 w-4 text-primary" />
+            <span className="text-sm font-medium">Agent Mode</span>
           </div>
+          <ToggleGroup
+            type="single"
+            value={generationOptions.agentMode ? "on" : "off"}
+            onValueChange={(value: string) => onAgentModeChange(value === "on")}
+            className="justify-start"
+          >
+            <ToggleGroupItem value="off" aria-label="Off">
+              Off
+            </ToggleGroupItem>
+            <ToggleGroupItem value="on" aria-label="On">
+              On
+            </ToggleGroupItem>
+          </ToggleGroup>
+        </div>
+        <div className="text-xs text-muted-foreground">
+          {generationOptions.agentMode 
+            ? "GPT will enhance your prompt before generating images"
+            : "Use your prompt directly for image generation"}
         </div>
       </div>
       <div className="flex items-center justify-between">

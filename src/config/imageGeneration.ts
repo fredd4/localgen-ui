@@ -12,13 +12,14 @@ export const MIN_IMAGES = 1;
 export const defaultGenerationOptions: GenerationOptions = {
   model: "gpt-image-1",
   prompt: "",
-  useExactPrompt: false,
   aspectRatio: "square",
   quality: "medium",
   transparency: false,
   moderation: "low",
   numImages: MIN_IMAGES,
   imageInput: undefined,
+  agentMode: false,
+  promptEnhancementModel: "gpt-4o-mini",
 } as const;
 
 export const aspectRatios: {

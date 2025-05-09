@@ -5,18 +5,21 @@ import type { AspectRatioValue } from "@/types";
 interface AspectRatioToggleProps {
   aspectRatio: AspectRatioValue;
   setAspectRatio: (aspectRatio: AspectRatioValue) => void;
+  disabled?: boolean;
 }
 
 type AspectRatioSetting = (typeof aspectRatios)[number];
 
 const AspectRatioToggleItem = ({
   aspectRatioSetting,
-}: Readonly<{ aspectRatioSetting: AspectRatioSetting }>) => {
+  disabled,
+}: Readonly<{ aspectRatioSetting: AspectRatioSetting; disabled?: boolean }>) => {
   return (
     <ToggleGroupItem
       value={aspectRatioSetting.value}
       aria-label={aspectRatioSetting.label}
       className="flex h-fit flex-col items-center justify-center space-y-1 py-3"
+      disabled={disabled}
     >
       <span>
         <aspectRatioSetting.Icon />
@@ -32,6 +35,7 @@ const AspectRatioToggleItem = ({
 export const AspectRatioToggle = ({
   aspectRatio,
   setAspectRatio,
+  disabled = false,
 }: Readonly<AspectRatioToggleProps>) => {
   return (
     <ToggleGroup
@@ -39,11 +43,13 @@ export const AspectRatioToggle = ({
       value={aspectRatio}
       onValueChange={setAspectRatio}
       className="justify-start"
+      disabled={disabled}
     >
       {aspectRatios.map((aspectRatioSetting) => (
         <AspectRatioToggleItem
           key={aspectRatioSetting.value}
           aspectRatioSetting={aspectRatioSetting}
+          disabled={disabled}
         />
       ))}
     </ToggleGroup>

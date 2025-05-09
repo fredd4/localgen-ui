@@ -6,12 +6,12 @@ import { useGenerationOptions } from "@/hooks/useGenerationOptions";
 import { generatedImagesAtom } from "@/store/atoms";
 import { motion } from "framer-motion";
 import { useAtomValue } from "jotai";
-import { useEffect } from "preact/hooks";
 import { useState } from "react";
 import ActionRow from "./ActionRow";
 import { ImageGenOptions } from "./ImageGenOptions";
 import { Button } from "@/components/ui/button";
 import { ImageIcon, XIcon } from "lucide-react";
+import { AgentModeToggle } from "./AgentModeToggle";
 
 const ImageGeneration = () => {
   const generatedImages = useAtomValue(generatedImagesAtom);
@@ -72,6 +72,11 @@ const ImageGeneration = () => {
                   </Button>
                 </div>
               )}
+              
+              <div className="mb-2">
+                <AgentModeToggle />
+              </div>
+
               <div className="flex gap-2">
                 <Textarea
                   id="prompt"

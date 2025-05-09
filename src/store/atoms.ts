@@ -11,10 +11,7 @@ export const showGenerationOptionsAtom = atom(false);
 export const generationOptionsAtom = atom<GenerationOptions>(
   defaultGenerationOptions
 );
-export const gaUseExactPromptAtom = createFieldAtom(
-  generationOptionsAtom,
-  "useExactPrompt"
-);
+export const promptEnhancingAtom = atom(false);
 
 export const apiKeyAtom = atom("");
 export const isApiKeyValidAtom = atom(false);

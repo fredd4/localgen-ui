@@ -24,13 +24,15 @@ export function useImageGeneration() {
 
       (async () => {
         try {
+          // Generate the image with the prompt in the options
+          // (which may be an enhanced prompt if agentMode was used)
           const result = await fetchImage(image.usedOptions, apiKey);
           const updatedImage: GeneratedImage = {
             ...image,
-            image: result.url, // The generated image URL
-            revisedPrompt: result.revisedPrompt, // Revised prompt (if any)
-            state: "generated", // Mark as generated
-            cost: result.cost, // API cost or usage cost
+            image: result.url,
+            revisedPrompt: image.revisedPrompt || result.revisedPrompt,
+            state: "generated",
+            cost: result.cost,
           };
 
           dispatch({
@@ -39,6 +41,7 @@ export function useImageGeneration() {
             data: updatedImage,
           });
 
+          // Save image locally
           await saveImageLocally({ ...updatedImage, locallySaved: true });
 
           dispatch({
@@ -67,5 +70,5 @@ export function useImageGeneration() {
         }
       })();
     });
-  }, [images, dispatch]);
+  }, [images, dispatch, apiKey]);
 }

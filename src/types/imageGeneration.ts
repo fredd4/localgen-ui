@@ -2,17 +2,19 @@ import { AspectRatioValue } from "@/types";
 
 export type QualityValue = "low" | "medium" | "high";
 export type ModerationValue = "low" | "auto";
+export type PromptEnhancementModelValue = "gpt-4o" | "gpt-4o-mini";
 
 export interface GenerationOptions {
   model: string;
   prompt: string;
-  useExactPrompt: boolean;
   aspectRatio: AspectRatioValue;
   quality: QualityValue;
   transparency: boolean;
   moderation: ModerationValue;
   numImages: number;
   imageInput?: string;
+  agentMode: boolean;
+  promptEnhancementModel: PromptEnhancementModelValue;
 }
 
 type GeneratedImageState = "pending" | "generated" | "saved" | "error";
