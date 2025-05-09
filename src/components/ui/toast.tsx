@@ -46,9 +46,11 @@ export function Toast({
   // Close animation handler
   const handleClose = () => {
     setIsVisible(false);
-    setTimeout(() => {
-      onClose && onClose();
-    }, 300); // Animation duration
+    if (onClose) {
+      setTimeout(() => {
+        onClose();
+      }, 300); // Animation duration
+    }
   };
 
   if (!isVisible) return null;

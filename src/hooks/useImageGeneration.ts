@@ -27,23 +27,30 @@ export function useImageGeneration() {
           // Generate the image with the prompt in the options
           // (which may be an enhanced prompt if agentMode was used)
           const result = await fetchImage(image.usedOptions, apiKey);
-          const updatedImage: GeneratedImage = {
-            ...image,
+          
+          // Update image with result but don't create unnecessary copies
+          const updatedImage: Partial<GeneratedImage> = {
             image: result.url,
             revisedPrompt: image.revisedPrompt || result.revisedPrompt,
             state: "generated",
             cost: result.cost,
           };
 
+          // Update the image in state with minimal duplication
           dispatch({
             type: "UPDATE_IMAGE",
             id: image.id,
             data: updatedImage,
           });
 
-          // Save image locally
-          await saveImageLocally({ ...updatedImage, locallySaved: true });
+          // After successfully updating state, update IndexedDB
+          await saveImageLocally({ 
+            ...image, 
+            ...updatedImage, 
+            locallySaved: true 
+          });
 
+          // Mark as saved in state
           dispatch({
             type: "UPDATE_IMAGE",
             id: image.id,

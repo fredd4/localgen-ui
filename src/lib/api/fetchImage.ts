@@ -39,7 +39,7 @@ export const fetchImage = async (
 
   switch (company) {
     case "OpenAI": {
-      // eslint-disable-next-line no-case-declarations
+       
       const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
 
       // For image input, we need to use a different approach

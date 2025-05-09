@@ -77,6 +77,11 @@ export default function ImageCard({
     getFormattedDate(generatedImage.createdAt) + "-" + generatedImage.usedOptions.prompt
   )}.png`;
 
+  // Use a more memory-efficient approach for the image source
+  const imageSource = generatedImage.state === "pending"
+    ? placeHolderSvgBase64
+    : generatedImage.image;
+
   return (
     <>
       <Card className="w-full overflow-hidden transition-shadow hover:shadow-lg flex flex-col">
@@ -84,19 +89,17 @@ export default function ImageCard({
           <div className="relative w-full flex justify-center">
             {generatedImage.state !== "error" && (
               <img
-                src={
-                  generatedImage.state === "pending"
-                    ? placeHolderSvgBase64
-                    : generatedImage.image
-                }
+                src={imageSource}
                 alt={generatedImage.usedOptions.prompt}
                 className="w-full object-contain transition-transform hover:scale-[1.02] cursor-pointer"
                 style={{ 
                   minHeight: "200px", 
-                  maxHeight: "500px", 
+                  maxHeight: "300px", // Reduced from 500px to help with memory
                   backgroundColor: "rgba(0, 0, 0, 0.02)"
                 }}
                 onClick={handleImageClick}
+                loading="lazy" // Lazy loading helps with memory usage
+                decoding="async" // Allow browser to decode images asynchronously
               />
             )}
             {generatedImage.state === "pending" && (

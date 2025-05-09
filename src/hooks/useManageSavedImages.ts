@@ -21,8 +21,12 @@ export const useManageSavedImages = () => {
   };
 
   const loadSavedImages = async () => {
-    const loadedImages = await getAllImages();
-    dispatch({ type: "SET_IMAGES", images: loadedImages });
+    try {
+      const loadedImages = await getAllImages();
+      dispatch({ type: "SET_IMAGES", images: loadedImages });
+    } catch (error) {
+      console.error("Error loading saved images:", error);
+    }
   };
 
   useEffect(() => {

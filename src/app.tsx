@@ -1,19 +1,12 @@
-import { useState, useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/ui/tabs";
 import "./index.css";
 import ImageGeneration from "./components/ImageGeneration/ImageGeneration";
 import Settings from "./components/Settings/Settings";
 import History from "./components/History/History";
 import ErrorNotification from "./components/ErrorNotification";
-import Header from "@/components/Layout/Header";
-import { ClockIcon, ImageIcon } from "lucide-react";
 import { useInitializeApiErrorSetter } from "./lib/api/getEnhancedPrompts";
 import { activeTabAtom } from "@/store/atoms";
 import { useAtom } from "jotai";
-
-const iconStyle = "w-5 h-5 mr-2";
-const tabTriggerStyle =
-  "flex items-center justify-center bg-muted text-muted-foreground border-border hover:bg-secondary hover:text-secondary-foreground focus:ring-ring active:bg-secondary active:text-secondary-foreground text-lg";
 
 const App = () => {
   const [activeTab, setActiveTab] = useAtom(activeTabAtom);

@@ -1,12 +1,12 @@
 import ImageCard from "@/components/ImageCard";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { useManageSavedImages } from "@/hooks/useManageSavedImages";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // Number of images to display per page
-const IMAGES_PER_PAGE = 40;
+const IMAGES_PER_PAGE = 10;
 
 const History = () => {
   const { savedImages } = useManageSavedImages();

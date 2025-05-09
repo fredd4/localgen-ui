@@ -1,5 +1,4 @@
 import { getSetting, hasSetting } from "@/lib/idb/settingsStore";
-import { validateApiKey } from "@/lib/validateApiKey";
 import { apiKeyAtom, isApiKeyValidAtom } from "@/store/atoms";
 import { apiKeySetting } from "@/store/idbSettings";
 import { useAtom } from "jotai";
@@ -12,10 +11,6 @@ export const useLoadApiKey = (
   const [apiKey, setApiKey] = useAtom(apiKeyAtom);
   const [isApiKeyValid, setIsApiKeyValid] = useAtom(isApiKeyValidAtom);
   
-  // No-op functions when no callbacks are provided
-  const dummyStringSetter = (_value: string) => { /* no-op */ };
-  const dummyBooleanSetter = (_value: boolean) => { /* no-op */ };
-
   useEffect(() => {
     const loadApiKey = async () => {
       if (setLoading) setLoading(true);
@@ -35,13 +30,7 @@ export const useLoadApiKey = (
           const storedApiKey = await getSetting(apiKeySetting);
           if (storedApiKey) {
             setApiKey(storedApiKey);
-            await validateApiKey(
-              storedApiKey,
-              setIsApiKeyValid,
-              setApiKey,
-              setError ?? dummyStringSetter,
-              setLoading ?? dummyBooleanSetter
-            );
+            setIsApiKeyValid(true);
           }
         }
       } catch (error) {
@@ -52,7 +41,8 @@ export const useLoadApiKey = (
     };
 
     loadApiKey();
+  // We intentionally exclude dependencies for this effect as it should only run once
   }, []);
 
-  return { apiKey, setApiKey, isApiKeyValid, setIsApiKeyValid };
+  return { apiKey, isApiKeyValid };
 };

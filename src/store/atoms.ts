@@ -1,6 +1,5 @@
 import { defaultGenerationOptions } from "@/config/imageGeneration";
 import { estimateCost } from "@/lib/costEstimation";
-import { createFieldAtom } from "@/lib/utils";
 import { GeneratedImage, GenerationOptions } from "@/types";
 import { atom } from "jotai";
 import { atomWithReducer } from "jotai/utils";
