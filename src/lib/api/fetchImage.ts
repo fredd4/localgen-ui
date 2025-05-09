@@ -10,7 +10,7 @@ export const fetchImage = async (
 ) => {
   const cost = estimateCost({ ...options, numImages: 1 });
   if (apiKey === "") throw new Error("You must provide a valid API key");
-  if (apiKey === "sk-debug") return { url: debugImagePngBase64, cost, revisedPrompt: "revised: " + options.prompt }
+  if (apiKey === "sk-debug") return { url: debugImagePngBase64, cost, revisedPrompt: "" }
   const model = options.model as Model;
   const modelConfig = modelConfigs[model];
 
@@ -108,7 +108,7 @@ export const fetchImage = async (
 
           return {
             url: "data:image/png;base64," + base64Data,
-            revisedPrompt: enhancedPrompt,
+            revisedPrompt: "",
             cost,
           };
         } catch (error) {
@@ -135,7 +135,6 @@ export const fetchImage = async (
         // Handle possible response formats from GPT-image-1
         const imageData = result.data[0];
         const base64Data = imageData.b64_json;
-        const revisedPrompt = imageData.revised_prompt || '';
         
         if (!base64Data) {
           throw new Error("No image data in the response");
@@ -143,7 +142,7 @@ export const fetchImage = async (
 
         return {
           url: "data:image/png;base64," + base64Data,
-          revisedPrompt: revisedPrompt,
+          revisedPrompt: "",
           cost,
         };
       }

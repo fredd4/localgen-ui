@@ -12,6 +12,7 @@ import {
 } from "@/store/atoms";
 import { useAtom, useAtomValue } from "jotai";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 const ActionRow = () => {
   const [useExactPrompt, setUseExactPrompt] = useAtom(gaUseExactPromptAtom);
@@ -23,8 +24,21 @@ const ActionRow = () => {
     setShowGenerationOption(!showGenerationOption);
   const generationOptions = useAtomValue(generationOptionsAtom);
   const { addNewImageGeneration } = useManageImageGeneration();
+  
   const handleGenerate = () => {
+    // Add new image generation
     addNewImageGeneration(generationOptions);
+    
+    // Scroll to the images section after a short delay to allow for rendering
+    setTimeout(() => {
+      const imagesSection = document.getElementById('generated-images-section');
+      if (imagesSection) {
+        imagesSection.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start'
+        });
+      }
+    }, 100);
   };
 
   return (

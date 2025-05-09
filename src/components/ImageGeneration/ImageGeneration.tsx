@@ -136,7 +136,7 @@ const ImageGeneration = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="mt-4 grid gap-6">
+        <div id="generated-images-section" className="mt-4 grid gap-6">
           {generatedImages.length > 0 && (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
               {generatedImages

@@ -30,7 +30,6 @@ interface ImageCardProperties {
 export default function ImageCard({
   generatedImage,
 }: Readonly<ImageCardProperties>) {
-  const [showRevisedPrompt, setShowRevisedPrompt] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
   const { removeImageGeneration } = useManageImageGeneration();
   const { deleteSavedImage } = useManageSavedImages();
@@ -114,28 +113,14 @@ export default function ImageCard({
         <CardContent className="p-4">
           <ScrollArea className="h-20">
             <p className="text-sm text-muted-foreground">
-              {showRevisedPrompt
-                ? generatedImage.revisedPrompt
-                : generatedImage.usedOptions.prompt}
+              {generatedImage.usedOptions.prompt}
             </p>
           </ScrollArea>
           <div className="mt-2 flex items-center justify-between">
             <span className="text-xs text-muted-foreground">
               {getFormattedDate(generatedImage.createdAt)}
             </span>
-            <div className="flex items-center space-x-2">
-              <Button
-                variant="link"
-                size="sm"
-                onClick={() => setShowRevisedPrompt(!showRevisedPrompt)}
-              >
-                {showRevisedPrompt ? (
-                  <span>Show Original Prompt</span>
-                ) : (
-                  <span>Show Revised Prompt</span>
-                )}
-              </Button>
-            </div>
+            <div className="flex items-center space-x-2"></div>
           </div>
         </CardContent>
         <CardFooter className="flex justify-between bg-muted/50 p-4">
