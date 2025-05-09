@@ -135,15 +135,36 @@ export default function ImageCard({
             <PopoverContent className="w-80">
               <div className="grid gap-2">
                 <div className="flex justify-between">
-                  <span>Style:</span>
+                  <span>Quality:</span>
                   <span className="font-medium">
-                    {generatedImage.usedOptions.style}
+                    <span className={
+                      generatedImage.usedOptions.quality === "high" 
+                        ? "text-green-600" 
+                        : generatedImage.usedOptions.quality === "medium"
+                          ? "text-blue-600"
+                          : "text-amber-600"
+                    }>
+                      {generatedImage.usedOptions.quality.charAt(0).toUpperCase() + generatedImage.usedOptions.quality.slice(1)}
+                    </span>
+                    <span className="ml-1 text-xs text-muted-foreground">
+                      ({generatedImage.usedOptions.quality === "high" 
+                        ? "$0.167-$0.25" 
+                        : generatedImage.usedOptions.quality === "medium"
+                          ? "$0.042-$0.063"
+                          : "$0.011-$0.016"})
+                    </span>
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span>HD:</span>
+                  <span>Transparency:</span>
                   <span className="font-medium">
-                    {generatedImage.usedOptions.hdQuality ? "Yes" : "No"}
+                    {generatedImage.usedOptions.transparency ? "On" : "Off"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Moderation:</span>
+                  <span className="font-medium">
+                    {generatedImage.usedOptions.moderation || "Low"}
                   </span>
                 </div>
                 <div className="flex justify-between">

@@ -1,0 +1,97 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# File Structure and Import Guidelines
+
+## Directory Structure
+
+- `/src/components`: UI components organized by feature and common UI elements
+  - `/ui`: Shared UI components
+  - Feature-specific directories: `ImageGeneration`, `History`, etc.
+- `/src/hooks`: Custom React hooks
+- `/src/store`: State management with Jotai
+- `/src/types`: TypeScript type definitions
+- `/src/lib`: Utility functions and shared logic
+- `/src/config`: Configuration constants and defaults
+- `/src/assets`: Static assets
+
+## Import Order
+
+Import statements should be organized in this order:
+
+1. React and framework imports
+2. Third-party library imports
+3. Project imports (components, hooks, utils, etc.)
+4. Type imports
+5. Asset imports (images, etc.)
+
+Example:
+
+```tsx
+// React and framework imports
+import { useState, useEffect } from "react";
+
+// Third-party library imports
+import { useAtom } from "jotai";
+import { motion } from "framer-motion";
+import { ImageIcon } from "lucide-react";
+
+// Project imports: components
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+
+// Project imports: hooks
+import { useGenerationOptions } from "@/hooks/useGenerationOptions";
+
+// Project imports: utils, state, config
+import { estimateCost } from "@/lib/costEstimation";
+import { generationOptionsAtom } from "@/store/atoms";
+import { defaultSettings } from "@/config/settings";
+
+// Type imports
+import type { GenerationOptions } from "@/types";
+
+// Asset imports
+import logoImage from "@/assets/logo.png";
+```
+
+## Path Aliases
+
+The project uses path aliases for cleaner imports:
+
+- `@/components`: Components directory
+- `@/hooks`: Hooks directory
+- `@/store`: Store directory
+- `@/lib`: Library functions and utilities
+- `@/types`: Type definitions
+- `@/config`: Configuration files
+- `@/assets`: Static assets
+
+Always use path aliases instead of relative imports for cleaner code and easier refactoring.
+
+## File Naming Conventions
+
+- React Components: PascalCase (e.g., `ImageCard.tsx`)
+- Hooks: camelCase with `use` prefix (e.g., `useGenerationOptions.tsx`)
+- Utility functions: camelCase (e.g., `costEstimation.ts`)
+- Type definitions: PascalCase (e.g., `GenerationOptions.ts`)
+- Store files: camelCase (e.g., `atoms.ts`, `reducers.ts`)
+- Config files: camelCase (e.g., `imageGeneration.ts`)
+
+## Export Patterns
+
+- Use named exports for utility functions, hooks, and UI components
+- Use default exports for page components and main feature components
+- Export types alongside components when they're closely related
+- Group related exports in barrel files (index.ts) when it makes sense
+
+Example barrel file (index.ts):
+
+```ts
+export * from "./Button";
+export * from "./Card";
+export * from "./Input";
+// etc.
+```

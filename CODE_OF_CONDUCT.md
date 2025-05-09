@@ -1,4 +1,4 @@
-# Code of Conduct - Local DALL-E 3 Web UI
+# Code of Conduct - LocalGen GPT-image-1 UI
 
 ## Our Pledge
 

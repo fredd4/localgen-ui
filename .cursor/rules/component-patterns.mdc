@@ -1,0 +1,119 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# React Component Patterns
+
+## UI Component Structure
+
+When creating a new UI component, follow this pattern:
+
+```tsx
+import { cn } from "@/lib/utils";
+import * as React from "react";
+
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+  size?: "default" | "sm" | "lg" | "icon";
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant = "default", size = "default", ...props }, ref) => {
+    return (
+      <button
+        className={cn(
+          "inline-flex items-center justify-center rounded-md font-medium transition-colors",
+          // Variant styles
+          // Size styles
+          className
+        )}
+        ref={ref}
+        {...props}
+      />
+    );
+  }
+);
+Button.displayName = "Button";
+
+export { Button, type ButtonProps };
+```
+
+## Feature Component Structure
+
+When creating a feature component, follow this pattern:
+
+```tsx
+import { Button } from "@/components/ui/button";
+import { useMyHook } from "@/hooks/useMyHook";
+import { useEffect, useState } from "react";
+
+const MyFeatureComponent = () => {
+  const [localState, setLocalState] = useState("");
+  const { data, isLoading, error } = useMyHook();
+  
+  useEffect(() => {
+    // Side effects
+  }, [dependencies]);
+  
+  const handleAction = () => {
+    // Event handler
+  };
+  
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  
+  return (
+    <div className="space-y-4">
+      {/* Component JSX */}
+      <Button onClick={handleAction}>Action</Button>
+    </div>
+  );
+};
+
+export default MyFeatureComponent;
+```
+
+## Component Organization
+
+1. Import dependencies
+2. Define interfaces/types
+3. Define component (for UI components, use forwardRef)
+4. Define internal subcomponents or utility functions
+5. Export component (default for feature components, named for UI components)
+
+## Props Handling
+
+- Use destructuring for props
+- Provide default values for optional props
+- Use TypeScript interfaces to define prop shapes
+- Use `React.HTMLAttributes` for HTML element props
+- Use the `cn()` utility for classname merging
+
+## Hooks Usage
+
+- Keep hook calls at the top level of your component
+- Create custom hooks for reusable logic
+- Follow the naming convention: `useActionNoun`
+- Extract complex state management to custom hooks
+- Use Jotai atoms for global state
+
+## Event Handling
+
+- Prefix handlers with `handle`: `handleClick`, `handleSubmit`
+- Define handlers inside the component but before the JSX
+- Use callbacks for event handlers that depend on props or state
+
+## Conditional Rendering
+
+- Use ternary operators for simple conditions
+- Use logical && for conditional rendering
+- Use early returns for loading/error states
+- Extract complex conditional rendering to helper functions
+
+## Performance Optimization
+
+- Use `React.memo` for pure components that render often
+- Use `useCallback` for event handlers passed to child components
+- Use `useMemo` for expensive computations
+- Avoid anonymous functions in render unless necessary

@@ -26,7 +26,7 @@ export const validateApiKey = async (
       await setSetting(apiKeySetting, key);
       return;
     }
-    const response = await fetch("https://api.openai.com/v1/models/dall-e-3", {
+    const response = await fetch("https://api.openai.com/v1/models/gpt-image-1", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${key}`,
@@ -35,7 +35,7 @@ export const validateApiKey = async (
     if (response.status === 200) {
       const data = await response.json();
       if (
-        data.id === "dall-e-3" &&
+        data.id === "gpt-image-1" &&
         data.object === "model" &&
         data.owned_by === "system"
       ) {

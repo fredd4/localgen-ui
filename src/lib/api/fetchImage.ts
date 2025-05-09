@@ -34,7 +34,7 @@ export const fetchImage = async (
   }
 
   switch (company) {
-    case "OpenAI":
+    case "OpenAI": {
       // eslint-disable-next-line no-case-declarations
       const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
 
@@ -42,22 +42,32 @@ export const fetchImage = async (
       const result = await openai.images.generate({
         model: model,
         prompt: (options.useExactPrompt && exactPromptInstruction) + options.prompt,
-        quality: options.hdQuality ? "hd" : "standard",
+        quality: options.quality,
         size: size,
+        moderation: options.moderation,
         n: 1,
-        response_format: "b64_json",
       });
 
-      if (!result.data[0].b64_json || !result.data[0].revised_prompt) {
+      
+      if (!result.data || !result.data[0]) {
         throw new Error("Image generation failed");
+      }
+      
+      // Handle possible response formats from GPT-image-1
+      const imageData = result.data[0];
+      const base64Data = imageData.b64_json;
+      const revisedPrompt = imageData.revised_prompt || '';
+      
+      if (!base64Data) {
+        throw new Error("No image data in the response");
       }
 
       return {
-        url: "data:image/png;base64," + result.data[0].b64_json,
-        revisedPrompt: result.data[0].revised_prompt,
+        url: "data:image/png;base64," + base64Data,
+        revisedPrompt: revisedPrompt,
         cost,
       };
-
+    }
     default:
       throw new Error(`Unsupported company: ${company}`);
   }

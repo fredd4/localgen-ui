@@ -13,12 +13,11 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { smallDeviceMediaQuery } from "@/config/app";
 import { MAX_IMAGES, MIN_IMAGES } from "@/config/imageGeneration";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import { cn } from "@/lib/utils";
 import { generationOptionsAtom } from "@/store/atoms";
-import { StyleValue } from "@/types";
-import * as TogglePrimitive from "@radix-ui/react-toggle";
+import { QualityValue } from "@/types";
 import { useAtom } from "jotai";
-import { GemIcon } from "lucide-react";
+import { SparklesIcon } from "lucide-react";
+import { LayersIcon } from "lucide-react";
 import { AspectRatioToggle } from "./AspectRatioToggle";
 
 export const ImageGenOptions = () => {
@@ -27,19 +26,19 @@ export const ImageGenOptions = () => {
     generationOptionsAtom
   );
 
-  const onStyleChange = (value: string) => {
-    if (value === "natural" || value === "vivid") {
+  const onQualityChange = (value: string) => {
+    if (value === "low" || value === "medium" || value === "high") {
       setGenerationOptions({
         ...generationOptions,
-        style: value as StyleValue,
+        quality: value as QualityValue,
       });
     }
   };
 
-  const onHdQualityToggle = () => {
+  const onTransparencyChange = (checked: boolean) => {
     setGenerationOptions({
       ...generationOptions,
-      hdQuality: !generationOptions.hdQuality,
+      transparency: checked,
     });
   };
 
@@ -63,49 +62,68 @@ export const ImageGenOptions = () => {
           }
         />
       </div>
-      <div className="flex flex-row items-center justify-between">
-        <div className="space-y-2">
+      <div className="mt-4 space-y-2">
+        <div className="flex items-center">
+          <SparklesIcon className="mr-2 h-4 w-4 text-primary" />
+          <span className="text-sm font-medium">Quality</span>
+        </div>
+        <Select value={generationOptions.quality} onValueChange={onQualityChange}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select Quality" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="low">Low ($0.011-$0.016)</SelectItem>
+            <SelectItem value="medium">Medium ($0.042-$0.063)</SelectItem>
+            <SelectItem value="high">High ($0.167-$0.25)</SelectItem>
+          </SelectContent>
+        </Select>
+        <div className="text-xs text-muted-foreground">
+          {generationOptions.quality === "low" && "Fast drafts with basic details"}
+          {generationOptions.quality === "medium" && "Balanced quality and cost"}
+          {generationOptions.quality === "high" && "Premium quality with fine details"}
+        </div>
+      </div>
+      <div className="mt-4 space-y-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <LayersIcon className="mr-2 h-4 w-4 text-primary" />
+            <span className="text-sm font-medium">Transparency</span>
+          </div>
           <ToggleGroup
             type="single"
-            value={generationOptions.style}
-            onValueChange={onStyleChange}
+            value={generationOptions.transparency ? "on" : "off"}
+            onValueChange={(value: string) => onTransparencyChange(value === "on")}
             className="justify-start"
           >
-            <ToggleGroupItem value="natural" aria-label="Natural">
-              Natural
+            <ToggleGroupItem value="off" aria-label="Off">
+              Off
             </ToggleGroupItem>
-            <ToggleGroupItem value="vivid" aria-label="Vivid">
-              Vivid
+            <ToggleGroupItem value="on" aria-label="On">
+              On
             </ToggleGroupItem>
           </ToggleGroup>
         </div>
-        <div className="flex items-center space-x-2">
-          <TogglePrimitive.Root
-            aria-label="Toggle HD Quality"
-            className={cn(
-              "inline-flex h-9 items-center justify-center rounded-md bg-transparent px-3 text-sm font-medium transition-colors hover:bg-muted hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground",
-              generationOptions.hdQuality ? "text-primary" : "text-zinc-200"
-            )}
-            pressed={generationOptions.hdQuality}
-            onPressedChange={onHdQualityToggle}
-          >
-            <GemIcon className={"mr-2 h-4 w-4"} />
-            HD Quality
-          </TogglePrimitive.Root>
+        <div className="text-xs text-muted-foreground">
+          {generationOptions.transparency 
+            ? "Generate images with transparent background (experimental)"
+            : "Generate images with standard background"}
+          <div className="mt-1 text-xs text-amber-500">
+            Note: Transparency is a feature that may work with specific prompting techniques
+          </div>
         </div>
       </div>
       <div className="flex items-center justify-between">
         <label htmlFor="model" className="mr-2 text-sm font-medium">
           Model:
         </label>
-        <Select defaultValue="dall-e-3" disabled>
+        <Select defaultValue="gpt-image-1" disabled>
           <SelectTrigger>
             <SelectValue id="model" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               <SelectLabel>OpenAI</SelectLabel>
-              <SelectItem value="dall-e-3">DALL-E 3</SelectItem>
+              <SelectItem value="gpt-image-1">GPT Image 1</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>

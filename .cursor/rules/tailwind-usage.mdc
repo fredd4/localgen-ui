@@ -1,0 +1,112 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Tailwind CSS Usage Guidelines
+
+## Color System
+
+Use the semantic color variables defined in the theme:
+
+- `bg-background` / `text-foreground`: Default page background and text
+- `bg-card` / `text-card-foreground`: Card components
+- `bg-popover` / `text-popover-foreground`: Popover/dropdown elements
+- `bg-primary` / `text-primary-foreground`: Primary actions/emphasis
+- `bg-secondary` / `text-secondary-foreground`: Secondary actions
+- `bg-muted` / `text-muted-foreground`: Subtle UI elements
+- `bg-accent` / `text-accent-foreground`: Accent UI elements
+- `bg-destructive` / `text-destructive-foreground`: Destructive actions
+- `border-border`: Border color
+- `bg-input`: Input backgrounds
+- `ring-ring`: Focus rings
+- `chart-1` through `chart-5`: Chart colors
+
+## Common Component Classes
+
+Card:
+```
+<Card className="relative">
+  <CardContent className="space-y-4 pt-6">
+    {/* Content */}
+  </CardContent>
+  <CardFooter>
+    {/* Footer */}
+  </CardFooter>
+</Card>
+```
+
+Button variants:
+```
+<Button variant="default|destructive|outline|secondary|ghost|link">
+  Button Text
+</Button>
+```
+
+Input components:
+```
+<Input 
+  className="min-h-[40px]" 
+  placeholder="Placeholder text" 
+/>
+
+<Textarea 
+  className="min-h-[200px]" 
+  placeholder="Enter text here..." 
+/>
+```
+
+## Responsive Design
+
+Use these breakpoints:
+- `sm`: 640px and above
+- `md`: 768px and above 
+- `lg`: 1024px and above
+- `xl`: 1280px and above
+
+Example:
+```
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+  {/* Content */}
+</div>
+```
+
+## Layout Patterns
+
+Flexbox:
+```
+<div className="flex flex-col space-y-4">
+  {/* Vertical stack */}
+</div>
+
+<div className="flex flex-row space-x-4 items-center">
+  {/* Horizontal stack */}
+</div>
+```
+
+Grid:
+```
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+  {/* Responsive grid */}
+</div>
+```
+
+Spacing:
+- Use `space-y-X` for vertical spacing between flex children
+- Use `space-x-X` for horizontal spacing between flex children
+- Use `gap-X` for grid spacing
+- Use `p-X` for padding and `m-X` for margins where X is a value from 0-12
+
+## Animation
+
+Use Framer Motion for animations combined with Tailwind classes:
+```
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5 }}
+  className="bg-card p-4 rounded-lg"
+>
+  {/* Content */}
+</motion.div>
+```

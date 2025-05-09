@@ -1,0 +1,140 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Jotai State Management Patterns
+
+## Atom Creation
+
+Define atoms in `src/store/atoms.ts` using these patterns:
+
+```ts
+// Basic atom
+export const counterAtom = atom(0);
+
+// Derived atom (computed/selector)
+export const doubleCounterAtom = atom((get) => get(counterAtom) * 2);
+
+// Writable derived atom
+export const tripleCounterAtom = atom(
+  (get) => get(counterAtom) * 3,
+  (get, set, newValue: number) => set(counterAtom, newValue / 3)
+);
+
+// Atom with reducer
+export const todosAtom = atomWithReducer<Todo[], TodoAction>(
+  [], todosReducer
+);
+
+// Helper for creating field atoms
+export const nameAtom = createFieldAtom(userAtom, "name");
+```
+
+## Atom Organization
+
+- Group related atoms together
+- Export atoms as named exports
+- Use descriptive names with the `Atom` suffix
+- Define derived state as atoms where possible
+- Use atoms with reducers for complex state logic
+
+## Actions and Reducers
+
+Define actions in `src/store/actions.ts`:
+
+```ts
+export type GeneratedImageAction = 
+  | { type: "add"; payload: GeneratedImage }
+  | { type: "remove"; payload: { id: string } }
+  | { type: "clear" };
+```
+
+Define reducers in `src/store/reducers.ts`:
+
+```ts
+export const generatedImagesReducer = (
+  state: GeneratedImage[],
+  action: GeneratedImageAction
+): GeneratedImage[] => {
+  switch (action.type) {
+    case "add":
+      return [...state, action.payload];
+    case "remove":
+      return state.filter((image) => image.id !== action.payload.id);
+    case "clear":
+      return [];
+    default:
+      return state;
+  }
+};
+```
+
+## Using Atoms in Components
+
+```tsx
+// Read-only atom
+const count = useAtomValue(counterAtom);
+
+// Writable atom
+const [count, setCount] = useAtom(counterAtom);
+
+// Write-only atom
+const setCount = useSetAtom(counterAtom);
+
+// Using with dispatch
+const [todos, dispatch] = useAtom(todosAtom);
+dispatch({ type: "add", payload: newTodo });
+```
+
+## Custom Hooks for Complex State
+
+Create custom hooks to encapsulate atom usage:
+
+```tsx
+export const useGenerationOptions = () => {
+  const [price, setPrice] = useAtom(priceAtom);
+  const [showSettings, setShowSettings] = useAtom(showGenerationOptionsAtom);
+  const [generationOptions, setGenerationOptions] = useAtom(
+    generationOptionsAtom
+  );
+
+  // Side effects or derived calculations
+  useEffect(() => {
+    const price = estimateCost(generationOptions);
+    setPrice(price);
+  }, [generationOptions, setPrice]);
+
+  // Helper functions
+  const toggleShowSettings = () => setShowSettings((prev) => !prev);
+
+  // Return the state and functions
+  return {
+    price,
+    showSettings,
+    toggleShowSettings,
+    generationOptions,
+    setGenerationOptions,
+  };
+};
+```
+
+## Persistence
+
+For persisting state to browser storage:
+
+```ts
+// Use atomWithStorage for simple persistence
+export const themeAtom = atomWithStorage("theme", "light");
+
+// For more complex persistence, use effects or custom atoms
+```
+
+## Best Practices
+
+- Keep atoms small and focused
+- Use derived atoms for computed values
+- Split complex state into smaller atoms
+- Use reducers for state with complex update logic
+- Create custom hooks to encapsulate atom usage
+- Use selectors for deriving state from multiple atoms

@@ -1,14 +1,16 @@
 import { AspectRatioValue } from "@/types";
 
-export type StyleValue = "natural" | "vivid";
+export type QualityValue = "low" | "medium" | "high";
+export type ModerationValue = "low" | "auto";
 
 export interface GenerationOptions {
   model: string;
   prompt: string;
   useExactPrompt: boolean;
   aspectRatio: AspectRatioValue;
-  style: StyleValue;
-  hdQuality: boolean;
+  quality: QualityValue;
+  transparency: boolean;
+  moderation: ModerationValue;
   numImages: number;
 }
 

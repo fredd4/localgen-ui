@@ -43,10 +43,10 @@ const Header = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <span className="text-xl font-bold sm:text-5xl">DALL-E Web App</span>
+          <span className="text-xl font-bold sm:text-5xl">GPT-image-1 Web App</span>
         </motion.h1>
         <div className="flex items-end justify-center space-x-2 sm:space-x-4">
-          <a href="https://github.com/aliciusschroeder/localgen-ui" target="_blank">
+          <a href="https://github.com/fredd4/localgen-ui" target="_blank">
             <Button size="icon" variant="outline" className={buttonStyle}>
               <GithubIcon size={32} />
               <span className={buttonLabelStyle}>About</span>

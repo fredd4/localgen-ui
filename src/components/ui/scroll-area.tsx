@@ -9,9 +9,11 @@ type ScrollAreaType = (typeof scrollAreaTypes)[number];
 const typePropertyHelper = (
   type: string | SignalLike<string | undefined> | undefined
 ) => {
-  if (!scrollAreaTypes.includes(type as ScrollAreaType)) {
-    console.error(`Invalid ScrollAreaType: ${type}, handling as undefined`);
-    return undefined;
+  if (!type || !scrollAreaTypes.includes(type as ScrollAreaType)) {
+    if (type !== undefined) {
+      console.error(`Invalid ScrollAreaType: ${type}, handling as undefined`);
+    }
+    return "auto"; // Provide a default value
   }
   return type as ScrollAreaType;
 };
@@ -21,16 +23,21 @@ type ScrollAreaDirection = (typeof scrollAreaDirections)[number];
 const dirPropertyHelper = (
   dir: string | SignalLike<string | undefined> | undefined
 ) => {
-  if (!scrollAreaDirections.includes(dir as ScrollAreaDirection)) {
-    console.error(`Invalid ScrollAreaDirection: ${dir}, handling as undefined`);
-    return undefined;
+  if (!dir || !scrollAreaDirections.includes(dir as ScrollAreaDirection)) {
+    if (dir !== undefined) {
+      console.error(`Invalid ScrollAreaDirection: ${dir}, handling as undefined`);
+    }
+    return "ltr"; // Provide a default value
   }
   return dir as ScrollAreaDirection;
 };
 
 const ScrollArea = forwardRef<
   HTMLDivElement, // HTML element that will be used by ScrollAreaPrimitive.Root
-  JSX.IntrinsicElements["div"] // Using Preact's intrinsic elements for typing
+  JSX.IntrinsicElements["div"] & { 
+    type?: string | SignalLike<string | undefined>;
+    dir?: string | SignalLike<string | undefined>;
+  }
 >(({ className, children, type, dir, ...props }, ref) => (
   <ScrollAreaPrimitive.Root
     ref={ref}

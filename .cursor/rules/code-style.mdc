@@ -1,0 +1,60 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Code Style and Conventions
+
+## TypeScript
+
+- Use TypeScript for all code
+- Define explicit types for component props, state, and functions
+- Use interfaces for complex object structures
+- Prefer type inference when the type is obvious
+
+## Component Structure
+
+- Use functional components with hooks
+- Export components as default at the end of the file
+- Keep components focused on a single responsibility
+- Extract reusable logic into custom hooks
+- Use named exports for utilities and hooks
+
+## Naming Conventions
+
+- Components: PascalCase (e.g., `ImageCard.tsx`)
+- Hooks: camelCase with `use` prefix (e.g., `useGenerationOptions.tsx`)
+- Files: Follow component/hook name (e.g., `ImageCard.tsx`, `useGenerationOptions.tsx`)
+- Functions: camelCase (e.g., `handleSubmit`)
+- Variables: camelCase (e.g., `imageUrl`)
+- Constants: camelCase or UPPER_SNAKE_CASE for truly constant values
+- Jotai atoms: camelCase with `Atom` suffix (e.g., `generationOptionsAtom`)
+
+## State Management
+
+- Use Jotai for global state management
+- Define atoms in `src/store/atoms.ts`
+- Group related atoms together
+- Use atomWithReducer for complex state logic
+- Define actions in `src/store/actions.ts` 
+- Define reducers in `src/store/reducers.ts`
+- Use selectors for derived state in `src/store/selectors.ts`
+
+## Styling
+
+- Use Tailwind CSS for styling
+- Use the design system variables defined in `tailwind.config.js`
+- Prefer utility classes over custom CSS
+- Follow the naming conventions in existing components
+- Use CSS variables for theme colors using the `hsl` format
+- Component styling precedence: 
+  1. Common component styles
+  2. Layout-specific styles
+  3. Component-specific styles
+
+## File Organization
+
+- Keep related files together by feature
+- Place shared components in the appropriate subdirectory
+- Define types close to where they're used (component files or in `/src/types`)
+- Extract reusable logic into hooks or utility functions

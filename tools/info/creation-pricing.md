@@ -1,19 +1,19 @@
 <Pricing-Information>
 
-# DALL·E 3
+# GPT-image-1
 
-## Standard
+## Quality Options
 
-### 1024×1024
-$0.040 / image
-### 1024×1792, 1792×1024
-$0.080 / image
+### Low Quality
+- 1024x1024: $0.011 / image
+- 1024x1536, 1536x1024: $0.016 / image
 
-## HD
+### Medium Quality
+- 1024x1024: $0.042 / image
+- 1024x1536, 1536x1024: $0.063 / image
 
-### 1024×1024
-$0.080 / image
-### 1024×1792, 1792×1024
-$0.120 / image
+### High Quality
+- 1024x1024: $0.167 / image
+- 1024x1536, 1536x1024: $0.25 / image
 
 </Pricing-Information>

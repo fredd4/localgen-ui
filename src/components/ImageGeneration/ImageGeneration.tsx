@@ -18,10 +18,6 @@ const ImageGeneration = () => {
   const { price, showSettings, generationOptions, setGenerationOptions } =
     useGenerationOptions();
 
-  useEffect(() => {
-    console.log("generationOptions", generationOptions);
-  }, [generationOptions]);
-
   return (
     <>
       <Card className="relative">

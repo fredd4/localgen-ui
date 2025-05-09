@@ -2,7 +2,7 @@
 openapi: 3.1.0
 info:
   title: OpenAI Image Generation API
-  description: API for generating images from text prompts using DALL·E models.
+  description: API for generating images from text prompts using GPT-image-1 model.
   version: 1.0.0
 servers:
   - url: https://api.openai.com/v1
@@ -12,7 +12,7 @@ paths:
     post:
       operationId: generateImage
       summary: Generate an image from a text prompt
-      description: Creates one or more images based on the given prompt using DALL·E models.
+      description: Creates one or more images based on the given prompt using GPT-image-1 model.
       requestBody:
         required: true
         content:

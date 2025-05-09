@@ -11,13 +11,25 @@ export const useLoadApiKey = (
 ) => {
   const [apiKey, setApiKey] = useAtom(apiKeyAtom);
   const [isApiKeyValid, setIsApiKeyValid] = useAtom(isApiKeyValidAtom);
-  const dummyStringSetter = (value: string) => console.log(value);
-  const dummyBooleanSetter = (value: boolean) => console.log(value);
+  
+  // No-op functions when no callbacks are provided
+  const dummyStringSetter = (_value: string) => { /* no-op */ };
+  const dummyBooleanSetter = (_value: boolean) => { /* no-op */ };
 
   useEffect(() => {
     const loadApiKey = async () => {
       if (setLoading) setLoading(true);
       try {
+        // Check for environment variable first
+        const envApiKey = import.meta.env.OPENAI_API_KEY || import.meta.env.VITE_OPENAI_API_KEY;
+        if (envApiKey) {
+          // Using API key from environment variable
+          setApiKey(envApiKey);
+          setIsApiKeyValid(true);
+          if (setLoading) setLoading(false);
+          return;
+        }
+
         const hasApiKeyStored = await hasSetting(apiKeySetting);
         if (hasApiKeyStored) {
           const storedApiKey = await getSetting(apiKeySetting);

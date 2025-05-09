@@ -1,0 +1,158 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Custom Hooks Guidelines
+
+## Hook Naming and Structure
+
+- Name hooks with `use` prefix followed by a descriptive name: `useImageGeneration`
+- Return an object with named properties for complex hooks
+- For simple hooks, return a tuple or single value
+
+## Common Hook Patterns
+
+### State and Side Effects Hook
+
+```tsx
+export const useImageGeneration = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [generationOptions, setGenerationOptions] = useAtom(generationOptionsAtom);
+  const [generatedImages, dispatch] = useAtom(generatedImagesAtom);
+  
+  const generate = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const result = await generateImage(generationOptions);
+      dispatch({ type: "add", payload: result });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  return { 
+    isLoading, 
+    error, 
+    generate, 
+    generationOptions, 
+    setGenerationOptions,
+    generatedImages 
+  };
+};
+```
+
+### Reactive Hook Pattern
+
+```tsx
+export const useGenerationOptions = () => {
+  const [price, setPrice] = useAtom(priceAtom);
+  const [showSettings, setShowSettings] = useAtom(showGenerationOptionsAtom);
+  const [generationOptions, setGenerationOptions] = useAtom(generationOptionsAtom);
+
+  useEffect(() => {
+    const price = estimateCost(generationOptions);
+    setPrice(price);
+  }, [generationOptions, setPrice]);
+
+  const toggleShowSettings = () => setShowSettings((prev) => !prev);
+
+  return {
+    price,
+    showSettings,
+    toggleShowSettings,
+    generationOptions,
+    setGenerationOptions,
+  };
+};
+```
+
+### Browser API Hook
+
+```tsx
+export const useMediaQuery = (query: string) => {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(query);
+    setMatches(mediaQuery.matches);
+
+    const handler = (event: MediaQueryListEvent) => {
+      setMatches(event.matches);
+    };
+
+    mediaQuery.addEventListener("change", handler);
+    return () => mediaQuery.removeEventListener("change", handler);
+  }, [query]);
+
+  return matches;
+};
+```
+
+### Async Data Hook
+
+```tsx
+export const useLoadApiKey = () => {
+  const [apiKey, setApiKey] = useAtom(apiKeyAtom);
+  const [isValid, setIsValid] = useAtom(isApiKeyValidAtom);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadKey = async () => {
+      try {
+        setIsLoading(true);
+        const storedKey = localStorage.getItem("openaiApiKey");
+        if (storedKey) {
+          setApiKey(storedKey);
+          setIsValid(await validateApiKey(storedKey));
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Unknown error");
+        setIsValid(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadKey();
+  }, [setApiKey, setIsValid]);
+
+  const saveApiKey = async (key: string) => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const isValid = await validateApiKey(key);
+      setIsValid(isValid);
+      if (isValid) {
+        localStorage.setItem("openaiApiKey", key);
+        setApiKey(key);
+      }
+      return isValid;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error");
+      setIsValid(false);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return { apiKey, isValid, isLoading, error, saveApiKey };
+};
+```
+
+## Hook Best Practices
+
+- Keep hooks focused on a single responsibility
+- Abstract complex logic into custom hooks
+- Handle loading, error, and success states
+- Clean up side effects in the return function of useEffect
+- Be mindful of dependencies in useEffect arrays
+- Use the early return pattern for complex conditions
+- Memoize expensive calculations with useMemo
+- Memoize callbacks that are passed to child components with useCallback

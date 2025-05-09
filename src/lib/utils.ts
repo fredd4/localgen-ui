@@ -132,7 +132,6 @@ export function downloadBase64Image(base64Data: string, filename: string) {
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
-        console.log("Image download initiated successfully");
       } else {
         throw new Error("FileReader failed to read the blob");
       }

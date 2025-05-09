@@ -1,0 +1,39 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# LocalGen GPT-image-1 UI Project Overview
+
+This is a React-based web application for generating AI images using OpenAI's GPT-image-1 model. It's built with:
+
+- React (via Preact for lightweight implementation)
+- TypeScript
+- Vite as the build tool
+- Tailwind CSS for styling
+- Jotai for state management
+- Radix UI components with custom styling
+- Framer Motion for animations
+
+## Project Structure
+
+- `/src/components`: UI components organized by feature and common UI elements
+  - `/ui`: Shared UI components (buttons, cards, inputs, etc.)
+  - `/ImageGeneration`: Components for the image generation feature
+  - `/History`: Components for image history display
+  - `/Layout`: Structural components (header, etc.)
+  - `/Settings`: Settings-related components
+- `/src/hooks`: Custom React hooks for reusable logic
+- `/src/store`: State management with Jotai atoms, actions, reducers
+- `/src/types`: TypeScript type definitions
+- `/src/lib`: Utility functions and shared logic
+- `/src/config`: Configuration constants and defaults
+- `/src/assets`: Static assets
+
+## Main Features
+
+- Image generation with configurable options
+- Image history and management
+- OpenAI API integration
+- Cost estimation for generated images
+- Responsive design for various screen sizes
