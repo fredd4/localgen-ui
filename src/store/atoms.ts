@@ -32,3 +32,7 @@ export const savedImagesCountAtom = atom((get) => get(savedImagesAtom).length);
 export const savedImagesCostAtom = atom((get) =>
   get(savedImagesAtom).reduce((acc, image) => acc + image.cost, 0)
 );
+
+// Reference image atom for image generation
+export const referenceImageAtom = atom<string | null>(null);
+export const activeTabAtom = atom<string>("create");

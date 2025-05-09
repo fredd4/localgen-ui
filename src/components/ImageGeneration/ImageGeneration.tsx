@@ -3,10 +3,10 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { useGenerationOptions } from "@/hooks/useGenerationOptions";
-import { generatedImagesAtom } from "@/store/atoms";
+import { generatedImagesAtom, referenceImageAtom } from "@/store/atoms";
 import { motion } from "framer-motion";
-import { useAtomValue } from "jotai";
-import { useState } from "react";
+import { useAtom, useAtomValue } from "jotai";
+import { useEffect, useState } from "react";
 import ActionRow from "./ActionRow";
 import { ImageGenOptions } from "./ImageGenOptions";
 import { Button } from "@/components/ui/button";
@@ -17,9 +17,23 @@ const ImageGeneration = () => {
   const generatedImages = useAtomValue(generatedImagesAtom);
   const [error] = useState(false); /* TODO: Display Errors properly */
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [referenceImage, setReferenceImage] = useAtom(referenceImageAtom);
 
   const { price, showSettings, generationOptions, setGenerationOptions } =
     useGenerationOptions();
+
+  // Check for reference image when component mounts or referenceImage changes
+  useEffect(() => {
+    if (referenceImage) {
+      setPreviewImage(referenceImage);
+      setGenerationOptions({
+        ...generationOptions,
+        imageInput: referenceImage,
+      });
+      // Clear the reference image atom so it doesn't persist if user navigates away and back
+      setReferenceImage(null);
+    }
+  }, [referenceImage, setGenerationOptions, generationOptions, setReferenceImage]);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target as HTMLInputElement;

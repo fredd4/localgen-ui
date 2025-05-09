@@ -1,6 +1,8 @@
 import OpenAI from "openai";
 import { AspectRatioValue, PromptEnhancementModelValue } from "@/types";
 import { ChatCompletionMessageParam } from "openai/resources/chat/completions";
+import { apiErrorAtom } from "@/components/ErrorNotification";
+import { useSetAtom } from "jotai";
 
 interface EnhancedPrompt {
   prompt: string;
@@ -13,6 +15,28 @@ export interface EnhancedPromptsResponse {
   prompts: EnhancedPrompt[];
 }
 
+// Create a global setter for the error atom outside of React components
+let _apiErrorSetter: ((value: string | null) => void) | null = null;
+
+// Function to get or initialize the error setter
+const getApiErrorSetter = () => {
+  if (!_apiErrorSetter) {
+    // In non-React context, just log to console
+    return (error: string | null) => {
+      if (error) {
+        console.error("API Error:", error);
+      }
+    };
+  }
+  return _apiErrorSetter;
+};
+
+// Hook to initialize the error setter in React components
+export const useInitializeApiErrorSetter = () => {
+  const setApiError = useSetAtom(apiErrorAtom);
+  _apiErrorSetter = setApiError;
+};
+
 export const getEnhancedPrompts = async (
   userPrompt: string,
   numImages: number,
@@ -20,6 +44,12 @@ export const getEnhancedPrompts = async (
   model: PromptEnhancementModelValue = "gpt-4o-mini",
   imageInput?: string
 ): Promise<EnhancedPromptsResponse> => {
+  // Get the setter for the error atom
+  const setApiError = getApiErrorSetter();
+  
+  // Reset any previous errors
+  setApiError(null);
+  
   if (apiKey === "") throw new Error("You must provide a valid API key");
   
   // For debug mode, return mock data
@@ -94,7 +124,7 @@ export const getEnhancedPrompts = async (
         { role: "user", content: userPrompt }
       ];
     }
-
+    
     const response = await openai.chat.completions.create({
       model: model,
       messages: messages,
@@ -103,6 +133,8 @@ export const getEnhancedPrompts = async (
 
     const content = response.choices[0].message.content;
     if (!content) {
+      console.error("OpenAI returned an empty response");
+      setApiError("OpenAI returned an empty response.");
       throw new Error("No content in the response");
     }
 
@@ -111,21 +143,53 @@ export const getEnhancedPrompts = async (
       
       // Validate that we have at least one prompt
       if (!parsedResponse.prompts || parsedResponse.prompts.length === 0) {
+        console.error("OpenAI returned no prompts in the response");
+        setApiError("OpenAI returned no prompts in the response.");
         throw new Error("No prompts received from OpenAI");
       }
-
+      
       // Validate aspect ratios
       parsedResponse.prompts.forEach(prompt => {
         if (!["square", "horizontal", "vertical"].includes(prompt.aspectRatio)) {
+          console.warn(`Invalid aspect ratio "${prompt.aspectRatio}" received, defaulting to square`);
           prompt.aspectRatio = "square"; // Default to square if invalid
         }
       });
       
       return parsedResponse;
     } catch (parseError) {
+      console.error("Failed to parse OpenAI response:", parseError);
+      console.error("Raw response content:", content);
+      setApiError(`Failed to parse OpenAI response: ${(parseError as Error).message}`);
       throw new Error(`Failed to parse OpenAI response: ${(parseError as Error).message}`);
     }
   } catch (error) {
-    throw new Error(`OpenAI API error: ${(error as Error).message}`);
+    console.error("OpenAI API error:", error);
+    
+    // Format a user-friendly error message
+    let errorMessage = `OpenAI API error: ${(error as Error).message}`;
+    
+    // Handle OpenAI API-specific errors
+    if (error instanceof OpenAI.APIError) {
+      console.error("Status:", error.status);
+      console.error("Name:", error.name);
+      console.error("Headers:", error.headers);
+      
+      if (error.error) {
+        console.error("Error details:", error.error);
+        console.error("Error type:", error.error.type);
+        console.error("Error message:", error.error.message);
+        
+        // Set a more specific error message
+        if (error.error.message) {
+          errorMessage = `OpenAI API error: ${error.error.message}`;
+        }
+      }
+    }
+    
+    // Set the error for display in UI
+    setApiError(errorMessage);
+    
+    throw new Error(errorMessage);
   }
 }; 

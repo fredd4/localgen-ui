@@ -11,6 +11,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useManageImageGeneration } from "@/hooks/useManageImageGeneration";
 import { useManageSavedImages } from "@/hooks/useManageSavedImages";
 import { downloadBase64Image, getFormattedDate, openImageInNewTab, promptToFilename } from "@/lib/utils";
+import { activeTabAtom, referenceImageAtom } from "@/store/atoms";
 import { GeneratedImage } from "@/types";
 import {
   AlertTriangleIcon,
@@ -19,9 +20,11 @@ import {
   InfoIcon,
   LoaderIcon,
   Trash2Icon,
+  WandIcon,
 } from "lucide-react";
 import { useState } from "react";
 import { ImageModal } from "./ImageModal";
+import { useSetAtom } from "jotai";
 
 interface ImageCardProperties {
   generatedImage: GeneratedImage;
@@ -33,6 +36,8 @@ export default function ImageCard({
   const [showImageModal, setShowImageModal] = useState(false);
   const { removeImageGeneration } = useManageImageGeneration();
   const { deleteSavedImage } = useManageSavedImages();
+  const setReferenceImage = useSetAtom(referenceImageAtom);
+  const setActiveTab = useSetAtom(activeTabAtom);
   
   const onDownloadIcon = () => {
     const filename = `${generatedImage.usedOptions.model
@@ -54,6 +59,12 @@ export default function ImageCard({
     if (generatedImage.locallySaved) {
       deleteSavedImage(generatedImage.id)
     }
+  };
+
+  const onUseAsReference = () => {
+    // Set the reference image and switch to the create tab
+    setReferenceImage(generatedImage.image);
+    setActiveTab("create");
   };
 
   const handleImageClick = () => {
@@ -130,6 +141,15 @@ export default function ImageCard({
             </Button>
             <Button variant="outline" size="icon" onClick={onFullscreen}>
               <ExpandIcon className="h-4 w-4" />
+            </Button>
+            <Button 
+              variant="outline" 
+              size="icon" 
+              onClick={onUseAsReference}
+              title="Use as reference image"
+              disabled={generatedImage.state === "pending" || generatedImage.state === "error"}
+            >
+              <WandIcon className="h-4 w-4" />
             </Button>
             <Popover>
               <PopoverTrigger asChild>
