@@ -1,4 +1,4 @@
-import { getAllImages, removeImage } from "@/lib/idb/imageStore";
+import { clearImages, getAllImages, removeImage } from "@/lib/idb/imageStore";
 import {
   savedImagesAtom,
   savedImagesCostAtom,
@@ -20,6 +20,15 @@ export const useManageSavedImages = () => {
     removeImage(id);
   };
 
+  const clearAllSavedImages = async () => {
+    try {
+      await clearImages();
+      dispatch({ type: "SET_IMAGES", images: [] });
+    } catch (error) {
+      console.error("Error clearing saved images:", error);
+    }
+  };
+
   const loadSavedImages = async () => {
     try {
       const loadedImages = await getAllImages();
@@ -33,5 +42,12 @@ export const useManageSavedImages = () => {
     loadSavedImages();
   }, []);
 
-  return { savedImages, savedImagesCount, savedImagesCost, loadSavedImages, deleteSavedImage };
+  return { 
+    savedImages, 
+    savedImagesCount, 
+    savedImagesCost, 
+    loadSavedImages, 
+    deleteSavedImage,
+    clearAllSavedImages 
+  };
 };

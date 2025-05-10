@@ -76,3 +76,40 @@ export const getImagesCount = async (): Promise<number> => {
   const count = await dbManager.countItems(IMAGES_STORE_NAME);
   return count;
 };
+
+export const getImagesCacheSize = async (): Promise<{
+  sizeInBytes: number;
+  sizeInMB: string;
+}> => {
+  try {
+    const images = await getAllImages();
+    
+    // Calculate total size of all images
+    let totalSizeInBytes = 0;
+    
+    for (const image of images) {
+      // Convert base64 to size in bytes
+      // Remove data URL prefix if present (e.g., "data:image/png;base64,")
+      const base64String = image.image.replace(/^data:image\/\w+;base64,/, '');
+      // Each base64 character represents 6 bits, so 4 chars = 3 bytes
+      const sizeInBytes = Math.floor((base64String.length * 3) / 4);
+      totalSizeInBytes += sizeInBytes;
+      
+      // Add a small overhead for metadata
+      totalSizeInBytes += JSON.stringify(image).length;
+    }
+    
+    const sizeInMB = (totalSizeInBytes / (1024 * 1024)).toFixed(2);
+    
+    return {
+      sizeInBytes: totalSizeInBytes,
+      sizeInMB: `${sizeInMB} MB`
+    };
+  } catch (error) {
+    console.error('Error calculating cache size:', error);
+    return {
+      sizeInBytes: 0,
+      sizeInMB: '0 MB'
+    };
+  }
+};
