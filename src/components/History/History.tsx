@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useManageSavedImages } from "@/hooks/useManageSavedImages";
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, InfoIcon } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 // Number of images to display per page
 const IMAGES_PER_PAGE = 10;
@@ -62,6 +63,13 @@ const History = () => {
   return (
     <Card>
       <CardContent className="mt-4">
+        <Alert className="mb-4">
+          <InfoIcon className="h-4 w-4 mr-2" />
+          <AlertDescription>
+            <p className="text-sm">Images are stored only in your browser's local storage. Please download any images you want to keep permanently using the download button on each image card.</p>
+          </AlertDescription>
+        </Alert>
+        
         {savedImages.length === 0 ? (
           <p>No images have been generated yet.</p>
         ) : (
